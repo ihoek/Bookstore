@@ -12,7 +12,7 @@ const error_age = document.getElementById("error_age");
 const error_career = document.getElementById("error_career");
 const error_nickname = document.getElementById("error_nickname");
 
-//배열 선언 - localStorge
+//배열 선언 - localStorage
 let data_map = [];
 const id_arr = [];
 const nick_arr = [];
@@ -297,7 +297,7 @@ function modify_fuc(event) {
     //버튼 수정
     modify_btn.innerHTML = "<div>수정</div>";
 
-    //localStorge
+    //localStorage
     let new_data = data_map.map((element) => {
       if (Number(element._id) === event) {
         return {
