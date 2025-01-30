@@ -1,27 +1,21 @@
 //변수 선언 - input id
 const id_input = document.getElementById("id_input");
 const name_input = document.getElementById("name_input");
-const age_input = document.getElementById("age_input");
-const career_input = document.getElementById("career_input");
-const nickname_input = document.getElementById("nickname_input");
+const price_input = document.getElementById("price_input");
+const content_input = document.getElementById("content_input");
 
 //error div
 const error_id = document.getElementById("error_id");
-const error_name = document.getElementById("error_name");
-const error_age = document.getElementById("error_age");
-const error_career = document.getElementById("error_career");
-const error_nickname = document.getElementById("error_nickname");
 
 //배열 선언 - localStorage
 let data_map = [];
 const id_arr = [];
-const nick_arr = [];
 let dummy_map = [];
 let ls = window.localStorage.getItem("_data", data_map);
 
 //버튼
 const save_btn = document.getElementById("save");
-let btn_active = [false, false, false, false];
+let btn_active = [false, false, false];
 
 //수정 삭제 버튼
 const delete_btn = document.querySelector(".btnDel");
@@ -55,8 +49,8 @@ tableWrap.innerHTML = `
       <div class="row">
       <div class="row_image">이미지</div>
         <div class="row_name">상품명</div>
-        <div class="row_age">가격</div>
-        <div class="row_career">상세</div>
+        <div class="row_price">가격</div>
+        <div class="row_content">상세</div>
         <div class="row_management">관리</div>
       </div>
       <div class="tBody"></div>
@@ -67,13 +61,13 @@ tableWrap.innerHTML = `
 function dataPrint() {
   const tbBody = document.querySelector(".tBody");
   tbBody.innerHTML = data_map
-    .map((item, index) => {
+    .map((item) => {
       return `
       <div class="table_data">
           <div class="inputImg"><img class="imgstyle" src="${item.img}" alt="${item.img}"></div>
           <div class="inputName" id = inputname${item._id}>${item.name}</div>
-          <div class="inputAge" id = inputage${item._id}>${item.age}</div>
-          <div class="inputCareer" id = inputcareer${item._id}>${item.career}</div>
+          <div class="inputPrice" id = inputprice${item._id}>${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+          <div class="inputContent" id = inputcontent${item._id}>${item.content}</div>
           
         <div class="data_btn">
           <button class="btnCor" id = modify_${item._id} onClick = "modify_fuc(${item._id})">수정</button>
@@ -105,15 +99,14 @@ function printId() {
     save_btn.disabled = true; // 비활성화
   }
 }
-function printAge() {
-  const content = document.getElementById("age_input").value;
-  if (content > 150) {
-    document.getElementById("error_age").innerText = "150살 이하로 작성하시오.";
-    btn_active[1] = false;
-  } else {
-    document.getElementById("error_age").innerText = "";
+function printPrice() {
+  const content = document.getElementById("price_input").value;
+  if (content.length > 0) {
     btn_active[1] = true;
+  } else {
+    btn_active[1] = false;
   }
+  
   if (btn_active.indexOf(false) === -1) {
     //false 찾지 못한 경우 즉, 모두 True인 경우
     save_btn.disabled = false; // 활성화
@@ -121,15 +114,12 @@ function printAge() {
     save_btn.disabled = true; // 비활성화
   }
 }
-function printCareer() {
-  const content = document.getElementById("career_input").value;
-  if (content.length < 15) {
-    document.getElementById("error_career").innerText =
-      "15자 이상으로 작성하시오.";
-    btn_active[2] = false;
-  } else {
-    document.getElementById("error_career").innerText = "";
+function printContent() {
+  const content = document.getElementById("content_input").value;
+  if (content.length > 0) {
     btn_active[2] = true;
+  } else {
+    btn_active[2] = false;
   }
   if (btn_active.indexOf(false) === -1) {
     //false 찾지 못한 경우 즉, 모두 True인 경우
@@ -138,40 +128,7 @@ function printCareer() {
     save_btn.disabled = true; // 비활성화
   }
 }
-function printNickName() {
-  const content = document.getElementById("nickname_input").value;
-  printNickName_den();
-  data_map.map((e) => {
-    //console.log("e", typeof e.nickname, "content", typeof content);
-    if (e.nickname == content) {
-      document.getElementById("error_nickname").innerText =
-        "별명을 중복 입력하셨습니다.";
-      btn_active[3] = false;
-    } else {
-      btn_active[3] = true;
-    }
-  });
-  if (btn_active.indexOf(false) === -1) {
-    //false 찾지 못한 경우 즉, 모두 True인 경우
-    save_btn.disabled = false; // 활성화
-  } else {
-    save_btn.disabled = true; // 비활성화
-  }
-}
-function printNickName_den() {
-  const content = document.getElementById("nickname_input").value;
-  //console.log(content);
-  if (content.length < 2) {
-    document.getElementById("error_nickname").innerText =
-      "2자 이상으로 입력하시오.";
-    btn_active[3] = false;
-    return false;
-  } else {
-    document.getElementById("error_nickname").innerText = "";
-    btn_active[3] = true;
-    return true;
-  }
-}
+
 //잘못된 저장 확인 함수
 function jugment(content) {
   let cnt = 0;
@@ -182,30 +139,6 @@ function jugment(content) {
     cnt++;
   } else {
     error_id.innerText = "";
-  }
-  //닉네임 중복 판단
-  if (nick_arr.slice(0, nick_arr.length - 1).includes(content.nickname)) {
-    error_nickname.innerText = "별명을 중복 입력하셨습니다.";
-    cnt++;
-  } else if (nickname_input.value.length < 2) {
-    error_nickname.innerText = "2자 이상으로 입력하시오.";
-    cnt++;
-  } else {
-    error_nickname.innerText = "";
-  }
-
-  if (content.career.length < 15) {
-    error_career.innerText = "15자 이상으로 입력하시오.";
-    cnt++;
-  } else {
-    error_career.innerText = "";
-  }
-
-  if (parseInt(content.age) > 150) {
-    error_age.innerText = "150살 이하로 작성하시오.";
-    cnt++;
-  } else {
-    error_age.innerText = "";
   }
 
   if (cnt >= 1) {
@@ -219,44 +152,34 @@ function modify_fuc(event) {
   //event는 item._id값
 
   const modify_btn = document.getElementById(`modify_${event}`); //수정버튼
-  const career = document.getElementById(`inputcareer${event}`); //현재행의 career
+  const content = document.getElementById(`inputcontent${event}`); //현재행의 content
   const name = document.getElementById(`inputname${event}`); // 현재행의 name
-  const age = document.getElementById(`inputage${event}`); //현재행의 age
+  const price = document.getElementById(`inputprice${event}`); //현재행의 price
 
   //현재 행 값
-  const currentValue = career.textContent;
+  const currentValue = content.textContent;
   const currentValue_name = name.textContent;
-  const currentValue_age = age.textContent;
+  const currentValue_price = price.textContent;
 
   if (modify_btn.innerText === "수정") {
     modify_btn.innerHTML = "<div>수정완료</div>";
 
     // 기존 데이터를 input 필드로 교체
-    career.innerHTML = `<input class="modify_input${event}" value="${currentValue}"/><div class="modify_input_fuc"></div>`;
+    content.innerHTML = `<input class="modify_input${event}" value="${currentValue}"/><div class="modify_input_fuc"></div>`;
     name.innerHTML = `<input class="modify_input_name${event}" value="${currentValue_name}"/><div class="modify_input_name_fuc"></div>`;
-    age.innerHTML = `<input class="modify_input_age${event}" value="${currentValue_age}"/><div class="modify_input_age_fuc"></div>`;
+    price.innerHTML = `<input class="modify_input_price${event}" value="${currentValue_price}"/><div class="modify_input_price_fuc"></div>`;
 
     //input content
-    const inputField = career.querySelector(`.modify_input${event}`);
-    const messageDiv = career.querySelector(".modify_input_fuc");
+    const inputField = content.querySelector(`.modify_input${event}`);
+    const messageDiv = content.querySelector(".modify_input_fuc");
 
     const inputField_name = name.querySelector(`.modify_input_name${event}`);
     const messageDiv_name = name.querySelector(".modify_input_name_fuc");
 
-    const inputField_age = age.querySelector(`.modify_input_age${event}`);
-    const messageDiv_age = age.querySelector(".modify_input_age_fuc");
+    const inputField_price = price.querySelector(`.modify_input_price${event}`);
+    const messageDiv_price = price.querySelector(".modify_input_price_fuc");
 
-    // career -  입력값 글자 수 검사
-    inputField.addEventListener("input", () => {
-      const newValue = inputField.value;
-      if (newValue.length < 15) {
-        messageDiv.innerText = "15자 이상으로 작성하시오.";
-        modify_btn.disabled = true;
-      } else {
-        messageDiv.innerText = "";
-        modify_btn.disabled = false;
-      }
-    });
+    
 
     // name - 공백 확인
     inputField_name.addEventListener("input", () => {
@@ -270,29 +193,42 @@ function modify_fuc(event) {
       }
     });
 
-    // age - 나이 확인(150살 이내)
-    inputField_age.addEventListener("input", () => {
-      const newValue_age = inputField_age.value;
-      if (newValue_age > 150) {
-        messageDiv_age.innerText = "150살 이내로 작성하시오";
+     // price 
+     inputField_price.addEventListener("input", () => {
+      const newValue_price = inputField_price.value;
+      if (newValue_price.length < 0) {
+        messageDiv_price.innerText = "글자를 입력하시오.";
         modify_btn.disabled = true;
       } else {
-        messageDiv_age.innerText = "";
+        messageDiv_price.innerText = "";
         modify_btn.disabled = false;
       }
     });
+
+     // content -  입력값 글자 수 검사
+     inputField.addEventListener("input", () => {
+      const newValue = inputField.value;
+      if (newValue.length < 0) {
+        messageDiv.innerText = "글자를 입력하시오.";
+        modify_btn.disabled = true;
+      } else {
+        messageDiv.innerText = "";
+        modify_btn.disabled = false;
+      }
+    });
+
   } else {
     // 수정 완료 상태
-    const newValue = career.querySelector(`.modify_input${event}`).value;
+    const newValue = content.querySelector(`.modify_input${event}`).value;
     const newValue_name = name.querySelector(
       `.modify_input_name${event}`
     ).value;
-    const newValue_age = age.querySelector(`.modify_input_age${event}`).value;
+    const newValue_price = price.querySelector(`.modify_input_price${event}`).value;
 
     //innerHTML 수정
-    career.innerHTML = `<div>${newValue}</div>`;
+    content.innerHTML = `<div>${newValue}</div>`;
     name.innerHTML = `<div>${newValue_name}</div>`;
-    age.innerHTML = `<div>${newValue_age}</div>`;
+    price.innerHTML = `<div>${newValue_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>`;
 
     //버튼 수정
     modify_btn.innerHTML = "<div>수정</div>";
@@ -303,8 +239,8 @@ function modify_fuc(event) {
         return {
           ...element,
           name: newValue_name,
-          career: newValue,
-          age: newValue_age,
+          content: newValue,
+          price: newValue_price,
         };
       } else {
         return {
@@ -314,14 +250,12 @@ function modify_fuc(event) {
       //console.log("element 이후", element);
     });
     data_map = new_data;
-    console.log(new_data);
     window.localStorage.setItem("_data", JSON.stringify(new_data));
   }
 }
 
 //삭제 버튼 클릭 함수
 function delete_fuc(event) {
-  console.log("event", event); // 해당 행의 id값 반환
 
   const new_data = data_map.filter((item) => Number(item._id) !== event);
 
@@ -353,9 +287,8 @@ window.onload = function () {
       img: img_arr[randomNumber],
       _id: id_input.value,
       name: name_input.value,
-      age: age_input.value,
-      career: career_input.value,
-      nickname: nickname_input.value,
+      price: price_input.value,
+      content: content_input.value,
       heart_chk : false, //main 페이지의 배열 초기값 세팅
       heart_src : "./Img/heart.png",
     };
@@ -369,10 +302,8 @@ window.onload = function () {
     //데이터 data_map에 push 후 해당 input 초기화
     id_input.value = "";
     name_input.value = "";
-    age_input.value = "";
-    career_input.value = "";
-    nickname_input.value = "";
-    console.log(data_map)
+    price_input.value = "";
+    content_input.value = "";
     //table에 행 달기
     dataPrint();
   });

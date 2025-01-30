@@ -130,12 +130,12 @@ input:focus {
   width: 15%;
   justify-content: center;
 }
-.row_age{
+.row_price{
   display: flex;
   width: 15%;
   justify-content: center;
 }
-.row_career{
+.row_content{
   display: flex;
   width: 18%;
   justify-content: center;
@@ -172,14 +172,14 @@ input:focus {
   text-align: center;
   justify-content: center;
 }
-.inputAge{
+.inputPrice{
   display: flex;
   width: 15%;
   text-align: center;
   justify-content: center;
   
 }
-.inputCareer {
+.inputContent {
   display: flex;
   width: 18%;
   text-align: center;
@@ -232,11 +232,11 @@ input:focus {
   
 }
 
-.inputCareer > input {
+.inputContent > input {
   display: block;
   width: 100px;
 }
-.inputAge > input {
+.inputPrice > input {
   display: block;
   width: 80px;
 }

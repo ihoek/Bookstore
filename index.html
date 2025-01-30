@@ -16,32 +16,24 @@
       />
       <div id="error_id"></div>
 
-      <input placeholder="이름을 입력해 주세요." id="name_input" />
-      <div id="error_name"></div>
+      <input placeholder="상품명을 입력해 주세요." id="name_input" />
+
 
       <input
         type="number"
-        placeholder="나이를 입력해 주세요."
-        id="age_input"
-        onkeyup="printAge()"
+        placeholder="가격를 입력해 주세요."
+        id="price_input"
+        onkeyup="printPrice()"
       />
-      <div id="error_age"></div>
+
 
       <input
-        placeholder="경력을 입력해 주세요."
-        id="career_input"
+        placeholder="상세 내용을 입력해 주세요."
+        id="content_input"
         minlength="15"
-        onkeyup="printCareer()"
+        onkeyup="printContent()"
       />
-      
-      <div id="error_career"></div>
-      <input
-        placeholder="별명을 입력해 주세요."
-        id="nickname_input"
-        minlength="2"
-        onkeyup="printNickName()"
-      />
-      <div id="error_nickname"></div>
+
       <button id="save">저장</button>
     </div>
     <!-- 테이블 작업 -->

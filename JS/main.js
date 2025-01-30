@@ -53,9 +53,9 @@ window.onload = function () {
       id: element._id,
       imgsrc: element.img,
       name: element.name,
-      price: element.age,
+      price: element.price,
       heart_img_src: element.heart_src,
-      content : element.career,
+      content : element.content,
       heart_chk : element.heart_chk
     };
     main_data_map.push(infoData);
@@ -67,8 +67,8 @@ window.onload = function () {
       id : element._id,
       imgsrc : element.img,
       name : element.name,
-      price : element.age,
-      content : element.career,
+      price : element.price,
+      content : element.content,
       check : element.heart_chk,
     }
     shopping_data.push(shopping);
