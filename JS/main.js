@@ -21,7 +21,7 @@ function dataMainPrint() {
           <img class="cardimg" src="${element.imgsrc}" id = ${element.id}>
           <div class="card_body">
             <h5 class="card_title">${element.name}</h5>
-            <p class="card_content">${element.content}</p>
+            <p class="card_content">${element.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
             <img class="heartimg cardimg" src=${element.heart_img_src} alt="heart" id="heart${element.id}" onclick="heart(${element.id})">
           </div>
       </div>`;
@@ -43,8 +43,10 @@ login.addEventListener("click", () => {
 });
 
 //window 로드
-window.onload = function () {  
-  if (JSON.parse(local_data) === null) {
+window.onload = function () { 
+  console.log(window.location.href) 
+  //console.log(JSON.parse(local_data).length)
+  if (JSON.parse(local_data).length === 0) {
     nulldataPrint();
   } else {
     //main data map - 화면을 그리기 위한 배열
