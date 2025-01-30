@@ -1,6 +1,5 @@
 //index 로컬스토로지
 let main_data_map = [];
-let infoData = [];
 let local_data = window.localStorage.getItem("_data");
 
 //변수 선언
@@ -9,12 +8,9 @@ const login = document.getElementById("login");
 const shopping_cart = document.getElementById("shop");
 
 //장바구니 로컬 스토로지
-let shopping = [];
+//let shopping = [];
 let shopping_data = [];
 let ls_shopping = window.localStorage.getItem("shopping_data");
-
-let heart_check = false;
-//let heart_src = "./Img/heart.png";3
 
 //값이 있을 때 메인 화면 구성
 function dataMainPrint() {
@@ -25,7 +21,7 @@ function dataMainPrint() {
           <img class="cardimg" src="${element.imgsrc}" id = ${element.id}>
           <div class="card_body">
             <h5 class="card_title">${element.name}</h5>
-            <p class="card_content">${element.price}</p>
+            <p class="card_content">${element.content}</p>
             <img class="heartimg cardimg" src=${element.heart_img_src} alt="heart" id="heart${element.id}" onclick="heart(${element.id})">
           </div>
       </div>`;
@@ -47,65 +43,100 @@ login.addEventListener("click", () => {
 });
 
 //window 로드
-window.onload = function () {
-  if (ls_shopping !== null) {
-    for (let j in JSON.parse(ls_shopping)) {
-      shopping_data.push(JSON.parse(ls_shopping)[j]);
-    }
-  }
+window.onload = function () {  
+  if (JSON.parse(local_data) === null) {
+    nulldataPrint();
+  } else {
+    //main data map - 화면을 그리기 위한 배열
   JSON.parse(local_data).map((element) => {
-    infoData = {
+    let infoData = {
       id: element._id,
       imgsrc: element.img,
       name: element.name,
-      price: element.career,
-      heart_img_src: "./Img/heart.png",
+      price: element.age,
+      heart_img_src: element.heart_src,
+      content : element.career,
+      heart_chk : element.heart_chk
     };
     main_data_map.push(infoData);
   });
 
-  if (JSON.parse(local_data).length === 0) {
-    nulldataPrint();
-  } else {
-    dataMainPrint();
+  //쇼핑 local Storage 생성
+  JSON.parse(local_data).map((element) => {
+    let shopping = {
+      id : element._id,
+      imgsrc : element.img,
+      name : element.name,
+      price : element.age,
+      content : element.career,
+      check : element.heart_chk,
+    }
+    shopping_data.push(shopping);
+  });
+
+  dataMainPrint();
+ 
   }
 };
+
+
 
 //heart 클릭 이벤트
 function heart(item) {
   //item === element.id
-  const heart_img = document.getElementById(`heart${item}`);
-  let str_heart = heart_img.src;
-  let str_heart_arr = str_heart.split("/")[str_heart.split("/").length - 1];
-  //console.log(str_heart_arr); //heart.png
-  console.log(heart_img);
-  shopping = {
-    id: item,
-    check: heart_check,
-    //src: heart_src,
-  };
-
-  if (str_heart_arr === "heart.png") {
-    //버튼을 한번 클릭한 상태 check === false 상태
-    heart_img.src = "./Img/fullheart.png";
-    shopping_data.push(shopping);
-    heart_check = true;
-    main_data_map.map((item) => {
-      return {
-        ...item,
-        heart_img_src: heart_img.src,
-      };
+    let new_shopping_data = shopping_data.map((element) =>{
+      let heart_src_id = document.getElementById(`heart${item}`);
+      if(Number(element.id) === item){
+        if(element.check === false){
+          heart_src_id.src = "./Img/fullheart.png";
+          return {
+            ...element,
+            check : true
+          }
+        }else{
+          heart_src_id.src = "./Img/heart.png";
+          return {
+            ...element,
+            check : false
+          }
+        }
+      }else{
+        return {
+          ...element
+        }
+      }
     });
-    console.log(main_data_map);
-  } else {
-    shopping_data.map((element) => {
-      let index = shopping_data.indexOf(element);
-      shopping_data.splice(index, 1);
-    });
-    heart_img.src = "./Img/heart.png";
-    //heart_src = "./Img/heart.png";
-    heart_check = false;
-  }
+    shopping_data = new_shopping_data;
+    window.localStorage.setItem("shopping_data", JSON.stringify(new_shopping_data));
 
-  window.localStorage.setItem("shopping_data", JSON.stringify(shopping_data));
+    let new_data = JSON.parse(local_data).map((element) =>{
+      
+      //console.log("element",element)
+      if(Number(element._id) === item){
+        if(element.heart_chk === false){
+          
+          return{
+            ...element,
+            heart_chk : true,
+            heart_src : "./Img/fullheart.png",
+          }
+        }else{
+          
+          return{
+            ...element,
+            heart_chk : false,
+            heart_src : "./Img/heart.png",
+          }
+        }
+      }else{
+        return {
+          ...element
+        }
+      }
+      
+    });
+    local_data = new_data;
+    window.localStorage.setItem("_data", JSON.stringify(new_data));
+
 }
+

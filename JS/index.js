@@ -356,6 +356,8 @@ window.onload = function () {
       age: age_input.value,
       career: career_input.value,
       nickname: nickname_input.value,
+      heart_chk : false, //main 페이지의 배열 초기값 세팅
+      heart_src : "./Img/heart.png",
     };
     id_arr.push(infoData._id);
     data_map.push(infoData);
