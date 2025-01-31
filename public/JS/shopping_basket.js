@@ -1,6 +1,7 @@
 //변수 선언 - DOM
 const shop = document.getElementById("shop");
 const container_main = document.querySelector(".container_main");
+const all_delete = document.getElementById("all_delete");
 
 //변수 선언 - localStorage
 let cart_list_data = window.localStorage.getItem("cart_data");
@@ -21,6 +22,7 @@ container_main.innerHTML = `
         <div class="row_management">관리</div>
       </div>
       <div class="tBody"></div>
+      <button class="btnDel" id = "all_delete" onClick = "All_delete()">장바구니 비우기</button>
     </div>
 `
 //body
@@ -45,7 +47,8 @@ function dataPrint(){
 
 //삭제 버튼 클릭 함수
 function delete_fuc(item) {
-    console.log(item);
+    //console.log(item);
+    const tbody = document.querySelector(".tBody");
     const new_data = cart_data.filter((element) => Number(element.id) !==item);
     //console.log(new_data)
     cart_data = new_data;
@@ -54,9 +57,30 @@ function delete_fuc(item) {
     del.parentNode.parentNode.remove(del);
 
     window.localStorage.setItem("cart_data",JSON.stringify(new_data));
+
+    if(cart_data.length === 0){
+        tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`
+    }
+}
+
+//모두 삭제 버튼 함수
+function All_delete(){
+    const tbody = document.querySelector(".tBody");
+    tbody.innerHTML = "";
+
+    cart_data.length = 0;
+    tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`
+    window.localStorage.setItem("cart_data",JSON.stringify(cart_data));
 }
 
 //window onload 함수
 window.onload = function () {
-    dataPrint();
+    const tbody = document.querySelector(".tBody");
+    
+    if(cart_data.length === 0){
+        tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`
+    }else{
+        dataPrint();
+    }
+    
 }
