@@ -7,20 +7,29 @@ const app = express();
 //view 엔진을 ejs를 쓰겠다는 설정
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-// 페이지 로딩 함수
+
+// 페이지 로딩 함수 - main
 app.get("/main", function (req, res) {
   res.render("main", {}); // views 폴더 밑에 있는 파일을 참조함
 });
 
+// 페이지 로딩 함수 - manager
 app.get("/manager", function (req, res) {
   //console.log(res)
   res.render("manager", {}); // views 폴더 밑에 있는 파일을 참조함
 });
 
+// 페이지 로딩 함수 - sub main 
 app.get("/submain", function (req, res) {
   //console.log(res)
   res.render("submain", {}); // views 폴더 밑에 있는 파일을 참조함
 });
+
+// 페이지 로딩 함수 - shopping cart
+app.get("/shopping_basket", function (req, res) {
+  res.render("shopping_basket", {}); // views 폴더 밑에 있는 파일을 참조함
+});
+
 // 서버 띄울때 포트 정보 셋팅 및 처음 실행 시 필요한 기능 수행 가능
 app.listen(3000, function () {
   console.log("server running");

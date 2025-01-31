@@ -1,3 +1,14 @@
+/* 색상 정의 */
+:root {
+    --main-color: #87cefa; /* 좀 더 선명한 하늘색 */
+    --secondary-color: #6ca6cd; /* 메인 색상의 어두운 버전 */
+    --error-color: #ff6b6b; /* 오류 메시지 빨간색 */
+    --input-bg: #f5faff; /* 입력 박스 배경색 */
+    --disabled-color: #b0b0b0f7; /* 비활성화 버튼 색상 */
+    --table-header-bg: #f4f4f4; /* 테이블 헤더 배경색 */
+    --table-border: #ddd; /* 테이블 테두리 */
+    --button-hover: #5e92b6; /* 버튼 hover 효과 색상 */
+  }
 .container_wrap{
     width: 100%;
     max-width: 1000px;
@@ -29,3 +40,107 @@
     width: 40px;
     height: 40px;
 }
+.table {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid #87cefa;
+    padding: 10px 0px;
+  }
+  .row_image{
+    display: flex;
+    width: 18%;
+    justify-content: center;
+  }
+  .row_name{
+    display: flex;
+    width: 15%;
+    justify-content: center;
+  }
+  .row_price{
+    display: flex;
+    width: 15%;
+    justify-content: center;
+  }
+  .row_content{
+    display: flex;
+    width: 18%;
+    justify-content: center;
+  }
+  .row_management{
+    display: flex;
+    width: 19%;
+    justify-content: center;
+  }
+.table_data{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0px;
+  }
+.imgstyle{
+    width: 100%;
+    height: 100%;
+  }
+  .inputImg{
+    display: flex;
+    width: 18%;
+    text-align: center;
+    justify-content: center;
+  }
+  .inputName{
+    display: flex;
+    width: 18%;
+    text-align: center;
+    justify-content: center;
+  }
+  .inputPrice{
+    display: flex;
+    width: 15%;
+    text-align: center;
+    justify-content: center;
+    
+  }
+  .inputContent {
+    display: flex;
+    width: 18%;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .data_btn{
+    display: flex;
+    width: 19%;
+  }
+  
+  /* 버튼 내부 스타일 */
+  .btnDel {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 80px;
+    height: 40px;
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    background-color: var(--error-color); /* 삭제 버튼: 빨간색 */
+  }
+  
+
+  /* 수정, 삭제 버튼 가로 배치 */
+  .table .tBody div div:last-child {
+    display: flex;
+    justify-content: space-between;
+  
+    gap: 5px;
+    
+  }

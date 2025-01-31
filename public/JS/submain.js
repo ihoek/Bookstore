@@ -5,6 +5,7 @@ const urlParams = url.searchParams;
 
 //변수 선언 - DOM
 const container_main = document.querySelector(".container_main");
+const shop = document.getElementById("shop");
 
 //변수 선언 - localStorage
 let local_data = window.localStorage.getItem("_data");
@@ -57,7 +58,6 @@ window.onload = function (){
 //버튼 클릭 함수
 function shop_basket(item){
     //item -> element._id 값값
-    
     arr.push(item); 
     if(arr.slice(0,arr.length-1).includes(item)){//중복값이라면
         alert("이미 입력된 값입니다.");
@@ -69,6 +69,7 @@ function shop_basket(item){
                     name : element.name,
                     price : element.price,
                     content : element.content,
+                    img : element.img
                 }
                 cart_list.push(infoData);
             }
@@ -77,6 +78,8 @@ function shop_basket(item){
         window.localStorage.setItem("cart_data",JSON.stringify(cart_list));
         console.log(arr);
     }
-    
-    
 }
+
+shop.addEventListener("click", () => {
+    window.location.href = "./shopping_basket";
+})

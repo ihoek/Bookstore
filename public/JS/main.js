@@ -6,6 +6,7 @@ let local_data = window.localStorage.getItem("_data");
 const container_main = document.querySelector(".container_main");
 const login = document.getElementById("login");
 const shopping_cart = document.getElementById("shop");
+const shop = document.getElementById("shop");
 
 //장바구니 로컬 스토로지
 //let shopping = [];
@@ -133,3 +134,6 @@ function heart(item) {
 
 }
 
+shop.addEventListener("click", () => {
+  window.location.href = "./shopping_basket";
+})

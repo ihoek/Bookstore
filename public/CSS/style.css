@@ -140,11 +140,7 @@ input:focus {
   width: 18%;
   justify-content: center;
 }
-.row_nickname{
-  display: flex;
-  width: 15%;
-  justify-content: center;
-}
+
 .row_management{
   display: flex;
   width: 19%;
@@ -185,12 +181,7 @@ input:focus {
   text-align: center;
   justify-content: center;
 }
-.inputNickname{
-  display: flex;
-  width: 15%;
-  text-align: center;
-  justify-content: center;
-}
+
 .data_btn{
   display: flex;
   width: 19%;
