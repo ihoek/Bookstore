@@ -19,8 +19,8 @@ function dataMainPrint() {
   container_main.innerHTML = main_data_map
     .map((element) => {
       return `
-    <div class="cardstyle" onclick="MovePage(${element.id})">
-          <img class="cardimg" src="${element.imgsrc}" id = ${element.id}>
+    <div class="cardstyle">
+          <img class="cardimg" src="${element.imgsrc}" id = ${element.id} onclick="MovePage(${element.id})">
           <div class="card_body">
             <h5 class="card_title">${element.name}</h5>
             <p class="card_content">${element.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
@@ -86,14 +86,23 @@ window.onload = function () {
 
 //MovePage 함수
 function MovePage(item){
-  //console.log("해당 카드 클릭 이벤트");
+  //item -> id값값
+  window.location.href = `./submain?id=${item}`;
+  // const nowUrl = window.location.href.toString();
+  // const url = new URL(nowUrl)
+  // console.log(url)
   //쿼리 스트링
-  
-  const queryString = new URLSearchParams(`?id=${item}`).toString();
-  const current_address = window.location.href;
-  window.location.href = `./submain.html`;
-  console.log(current_address);
+  // const searchParams = new URLSearchParams();
+  // searchParams.set("id", item);
+  //console.log(searchParams.get("id"))
+  //const queryString = new URLSearchParams("?id=0");
+  //const current_address = window.location.href;
+  //window.location = current_address + queryString
+  //window.location.href = `./submain.html`;
+  //console.log("queryString",queryString);
+  //console.log("current_address",current_address.toString() + queryString.toString())
 }
+
 //heart 클릭 이벤트
 function heart(item) {
   //item === element.id
@@ -121,35 +130,6 @@ function heart(item) {
     });
     shopping_data = new_shopping_data;
     window.localStorage.setItem("shopping_data", JSON.stringify(new_shopping_data));
-
-    let new_data = JSON.parse(local_data).map((element) =>{
-      
-      //console.log("element",element)
-      if(Number(element._id) === item){
-        if(element.heart_chk === false){
-          
-          return{
-            ...element,
-            heart_chk : true,
-            heart_src : "./Img/fullheart.png",
-          }
-        }else{
-          
-          return{
-            ...element,
-            heart_chk : false,
-            heart_src : "./Img/heart.png",
-          }
-        }
-      }else{
-        return {
-          ...element
-        }
-      }
-      
-    });
-    local_data = new_data;
-    window.localStorage.setItem("_data", JSON.stringify(new_data));
 
 }
 

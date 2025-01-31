@@ -23,22 +23,22 @@ let modify_cnt = 0;
 
 //img arr
 const img_arr = [
-  "./Img/a_forecast_of_the_times.jpg",
-  "./Img/a_report_of_genius.jpg",
-  "./Img/Contradiction.jpg",
-  "./Img/don_t_say_goodbye.jpg",
-  "./Img/Here_comes_the_boy.jpg",
-  "./Img/strong_current.jpg",
-  "./Img/the_art_of_mind.jpg",
-  "./Img/Vegetarian.jpg",
-  "./Img/White.jpg",
-  "./Img/Your_Utopia.jpg",
-  "./Img/Fish_don't_exist.jpg",
-  "./Img/Human_disqualification.jpg",
-  "./Img/Little_Life1.jpg",
-  "./Img/Proof_of_the_sphere.jpg",
-  "./Img/the_psychology_of_money.jpg",
-  "./Img/Damien.jpg",
+  "/Img/a_forecast_of_the_times.jpg",
+  "/Img/a_report_of_genius.jpg",
+  "/Img/Contradiction.jpg",
+  "/Img/don_t_say_goodbye.jpg",
+  "/Img/Here_comes_the_boy.jpg",
+  "/Img/strong_current.jpg",
+  "/Img/the_art_of_mind.jpg",
+  "/Img/Vegetarian.jpg",
+  "/Img/White.jpg",
+  "/Img/Your_Utopia.jpg",
+  "/Img/Fish_don't_exist.jpg",
+  "/Img/Human_disqualification.jpg",
+  "/Img/Little_Life1.jpg",
+  "/Img/Proof_of_the_sphere.jpg",
+  "/Img/the_psychology_of_money.jpg",
+  "/Img/Damien.jpg",
 ];
 
 
