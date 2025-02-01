@@ -12,7 +12,7 @@
   padding: 10px 5px;
   border-bottom: 3px solid #6ca6cd;
 }
-.header_menu_left {
+.header_menu_right {
   display: flex;
   gap: 10px;
 }
@@ -53,7 +53,25 @@
   height: 35px;
   cursor: pointer;
 }
+.cart_style{
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
 .heartimg {
   width: 20px;
   height: 20px;
+}
+.cart_num{
+  display: flex;
+  position: absolute;
+  text-align: center;
+  justify-content: center;
+  right: 7px;
+  top: 25px;
+  background-color: white;
+  border: 1px solid #6ca6cd;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }

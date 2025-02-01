@@ -2,14 +2,33 @@
 const shop = document.getElementById("shop");
 const container_main = document.querySelector(".container_main");
 const all_delete = document.getElementById("all_delete");
+const cart_num = document.querySelector(".cart_num");
+const logoStyle = document.querySelector(".logoStyle");
+const login = document.getElementById("login");
 
 //변수 선언 - localStorage
 let cart_list_data = window.localStorage.getItem("cart_data");
 let cart_data = JSON.parse(cart_list_data);
+
+
+//페이지 이동동
 //헤더 shopping cart 이미지 클릭 함수
 shop.addEventListener("click", () => {
     window.location.href = "./shopping_basket";
   });
+
+//logo 클릭 시 이동
+logoStyle.addEventListener("click", () => {
+    window.location.href = "./main";
+  });
+  
+  login.addEventListener("click", () => {
+    Swal.fire({
+      icon: "error",
+      title: "로그인 준비중 입니다",
+    });
+  });
+
 
 //header
 container_main.innerHTML = `
@@ -57,6 +76,7 @@ function delete_fuc(item) {
     del.parentNode.parentNode.remove(del);
 
     window.localStorage.setItem("cart_data",JSON.stringify(new_data));
+    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
 
     if(cart_data.length === 0){
         tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`
@@ -71,10 +91,14 @@ function All_delete(){
     cart_data.length = 0;
     tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`
     window.localStorage.setItem("cart_data",JSON.stringify(cart_data));
+    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
 }
 
 //window onload 함수
 window.onload = function () {
+    //장바구니 숫자
+    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+
     const tbody = document.querySelector(".tBody");
     
     if(cart_data.length === 0){
@@ -83,4 +107,6 @@ window.onload = function () {
         dataPrint();
     }
     
+    
 }
+

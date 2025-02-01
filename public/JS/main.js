@@ -7,13 +7,18 @@ const container_main = document.querySelector(".container_main");
 const login = document.getElementById("login");
 const shopping_cart = document.getElementById("shop");
 const shop = document.getElementById("shop");
+const logoStyle = document.querySelector(".logoStyle");
 
 //장바구니 로컬 스토로지
 //let shopping = [];
 let shopping_data = [];
 let ls_shopping = window.localStorage.getItem("shopping_data");
 
-
+//페이지 이동
+//logo 클릭 시 이동
+logoStyle.addEventListener("click", () => {
+  window.location.href = "./main";
+});
 
 //값이 있을 때 메인 화면 구성
 function dataMainPrint() {
@@ -45,8 +50,17 @@ login.addEventListener("click", () => {
   });
 });
 
+let cart_list_data = window.localStorage.getItem("cart_data");
+let cart_list = JSON.parse(cart_list_data);
+const cart_num = document.querySelector(".cart_num");
+//장바구니 숫자
+cart_num.innerHTML= `<div>${cart_list.length}</div>`;
+
 //window 로드
 window.onload = function () { 
+ 
+
+
   //console.log(JSON.parse(local_data).length)
   if (JSON.parse(local_data).length === 0) {
     nulldataPrint();
@@ -136,4 +150,4 @@ function heart(item) {
 
 shop.addEventListener("click", () => {
   window.location.href = "./shopping_basket";
-})
+});

@@ -12,7 +12,7 @@
     padding: 10px 5px;
     border-bottom: 3px solid #6ca6cd;
   }
-  .header_menu_left {
+  .header_menu_right {
     display: flex;
     gap: 10px;
   }

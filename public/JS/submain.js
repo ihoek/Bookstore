@@ -1,20 +1,38 @@
 //url paramas 경로 id값
 const url = new URL(window.location.toString());
 const urlParams = url.searchParams;
-//console.log(urlParams.get("id"));
 
 //변수 선언 - DOM
 const container_main = document.querySelector(".container_main");
 const shop = document.getElementById("shop");
+const cart_num = document.querySelector(".cart_num");
+const logoStyle = document.querySelector(".logoStyle");
+const login = document.getElementById("login");
 
 //변수 선언 - localStorage
 let local_data = window.localStorage.getItem("_data");
 let cart_list  = [];
 let cart_list_data = window.localStorage.getItem("cart_data");
+let cart_data = JSON.parse(cart_list_data);
 
 //중복 확인용 배열
 let arr = [];
 
+//페이지 이동
+//logo 클릭 시 이동
+logoStyle.addEventListener("click", () => {
+    window.location.href = "./main";
+  });
+
+//login 버튼 클릭
+login.addEventListener("click", () => {
+    Swal.fire({
+      icon: "error",
+      title: "로그인 준비중 입니다",
+    });
+  });
+
+  
 //메인 화면 구성 함수
 function dataPrint(item){
     container_main.innerHTML = `
@@ -29,6 +47,9 @@ function dataPrint(item){
 
 //window 화면 로드 함수
 window.onload = function (){
+    //장바구니 숫자
+    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+
     if(cart_list_data !== null){//이미 값이 존재할 경우
         JSON.parse(cart_list_data).map((element) => {
             cart_list.push(element);
@@ -76,6 +97,7 @@ function shop_basket(item){
         });
         
         window.localStorage.setItem("cart_data",JSON.stringify(cart_list));
+        cart_num.innerHTML= `<div>${cart_data.length}</div>`;
         console.log(arr);
     }
 }
