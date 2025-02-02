@@ -22,11 +22,20 @@ function dataMainPrint() {
     .map((element) => {
       return `
     <div class="cardstyle">
-          <img class="cardimg" src="${element.img}" id = ${element.id} onclick="MovePage(${element.id})">
+          <img class="cardimg" src="${element.img}" id = ${
+        element.id
+      } onclick="MovePage(${element.id})">
           <div class="card_body">
             <h5 class="card_title">${element.name}</h5>
-            <p class="card_content">${element.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-            <img class="heartimg cardimg" src=${element.heart_src} alt="heart" id="heart${element.id}" onclick="heart(${element.id})">
+            <p class="card_content">${element.price.replace(
+              /\B(?=(\d{3})+(?!\d))/g,
+              ","
+            )}</p>
+            <img class="heartimg cardimg" src=${
+              element.heart_src
+            } alt="heart" id="heart${element.id}" onclick="heart(${
+        element.id
+      })">
           </div>
       </div>`;
     })
@@ -50,43 +59,44 @@ shop.addEventListener("click", () => {
   window.location.href = "./shopping_basket";
 });
 
-
 //window 로드
-window.onload = function () { 
-  let cart_list_data = window.localStorage.getItem("cart_data");
-  let cart_list = JSON.parse(cart_list_data);
-  let cart_num = document.querySelector(".cart_num");
-  //장바구니 숫자
-  cart_num.innerHTML= `<div>${cart_list.length}</div>`;
-
-
+window.onload = function () {
   //console.log(JSON.parse(local_data).length)
   if (JSON.parse(local_data).length === 0) {
     nulldataPrint();
   } else {
     //main data map - 화면을 그리기 위한 배열
-  JSON.parse(local_data).map((element) => {
-    //console.log("element",element)
-    let infoData = {
-      id: element.id,
-      img: element.img,
-      name: element.name,
-      price: element.price,
-      heart_src: element.heart_src,
-      content : element.content,
-      heart_chk : element.heart_chk
-    };
-    
-    main_data_map.push(infoData);
-  });
+    JSON.parse(local_data).map((element) => {
+      //console.log("element",element)
+      let infoData = {
+        id: element.id,
+        img: element.img,
+        name: element.name,
+        price: element.price,
+        heart_src: element.heart_src,
+        content: element.content,
+        heart_chk: element.heart_chk,
+      };
 
-  dataMainPrint();
- 
+      main_data_map.push(infoData);
+    });
+
+    dataMainPrint();
+    let cart_list_data = window.localStorage.getItem("cart_data");
+    let cart_list = JSON.parse(cart_list_data);
+    let cart_num = document.querySelector(".cart_num");
+    //console.log(cart_list_data);
+    //장바구니 숫자
+    if (cart_list_data === null) {
+      cart_num.innerHTML = "";
+    } else {
+      cart_num.innerHTML = `<div>${cart_list.length}</div>`;
+    }
   }
 };
 
 //MovePage 함수
-function MovePage(item){
+function MovePage(item) {
   //item -> id값값
   window.location.href = `./submain?id=${item}`;
   // const nowUrl = window.location.href.toString();
@@ -109,33 +119,30 @@ function heart(item) {
   //item === element.id
   let heart_src_id = document.getElementById(`heart${item}`);
   let new_data = main_data_map.map((element) => {
-    if(Number(element.id) === item){//해당 영역 클릭
-      if(element.heart_chk === false){
+    if (Number(element.id) === item) {
+      //해당 영역 클릭
+      if (element.heart_chk === false) {
         heart_src_id.src = "./Img/fullheart.png";
         //element.heart_chk = true;
         //console.log(element.heart_chk)
-        return{
+        return {
           ...element,
-          heart_chk : true,
-          heart_src : "./Img/fullheart.png",
-        }
-        
-      }else{
+          heart_chk: true,
+          heart_src: "./Img/fullheart.png",
+        };
+      } else {
         heart_src_id.src = "./Img/heart.png";
-        return{
+        return {
           ...element,
-          heart_chk : false,
-          heart_src : "./Img/heart.png",
-        }
-      } 
-    }else{
-      return{...element};
+          heart_chk: false,
+          heart_src: "./Img/heart.png",
+        };
+      }
+    } else {
+      return { ...element };
     }
   });
   //console.log(new_data);
   main_data_map = new_data;
-  window.localStorage.setItem("_data",JSON.stringify(new_data))
-
+  window.localStorage.setItem("_data", JSON.stringify(new_data));
 }
-
-
