@@ -10,7 +10,6 @@ const error_id = document.getElementById("error_id");
 //배열 선언 - localStorage
 let data_map = [];
 let id_arr = [];
-let dummy_map = [];
 let ls = window.localStorage.getItem("_data", data_map);
 
 //버튼
@@ -256,8 +255,9 @@ function modify_fuc(event) {
 
 //삭제 버튼 클릭 함수
 function delete_fuc(event) {
-
+  //event === item.id
   const new_data = data_map.filter((item) => Number(item.id) !== event);
+  id_arr.filter((item) => Number(item) !== event)
 
   data_map = new_data;
   const del = document.getElementById(`delete_${event}`);
@@ -274,6 +274,8 @@ window.onload = function () {
       data_map.push(JSON.parse(ls)[j]);
       id_arr.push(data_map[j].id);
     }
+    console.log("data", data_map)
+    console.log("id_arr",id_arr);
   }
 
   dataPrint();
@@ -281,7 +283,7 @@ window.onload = function () {
   //버튼 클릭 이벤트
   save_btn.addEventListener("click", () => {
     save_btn.disabled = true; // 비활성화
-    btn_active = [false, false, false, false];
+    btn_active = [false, false, false];
     const randomNumber = Math.floor(Math.random()*16);
     let infoData = {
       img: img_arr[randomNumber],
@@ -297,7 +299,7 @@ window.onload = function () {
     jugment(infoData);
 
     window.localStorage.setItem("_data", JSON.stringify(data_map));
-    dummy_map = window.localStorage.getItem("_data");
+
 
     //데이터 data_map에 push 후 해당 input 초기화
     id_input.value = "";

@@ -48,7 +48,7 @@ function dataPrint(item){
 //window 화면 로드 함수
 window.onload = function (){
     //장바구니 숫자
-    //cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
 
     if(cart_list_data !== null){//이미 값이 존재할 경우
         JSON.parse(cart_list_data).map((element) => {
