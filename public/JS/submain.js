@@ -13,7 +13,7 @@ const login = document.getElementById("login");
 let local_data = window.localStorage.getItem("_data");
 let cart_list  = [];
 let cart_list_data = window.localStorage.getItem("cart_data");
-let cart_data = JSON.parse(cart_list_data);
+let cart_ls = JSON.parse(cart_list_data);
 
 //중복 확인용 배열
 let arr = [];
@@ -48,7 +48,7 @@ function dataPrint(item){
 //window 화면 로드 함수
 window.onload = function (){
     //장바구니 숫자
-    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+    cart_num.innerHTML= `<div>${cart_ls.length}</div>`;
 
     if(cart_list_data !== null){//이미 값이 존재할 경우
         JSON.parse(cart_list_data).map((element) => {
@@ -97,7 +97,7 @@ function shop_basket(item){
         });
         
         window.localStorage.setItem("cart_data",JSON.stringify(cart_list));
-        cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+        cart_num.innerHTML= `<div>${cart_list.length}</div>`;
         console.log(arr);
     }
 }

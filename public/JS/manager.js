@@ -268,6 +268,7 @@ function delete_fuc(event) {
 
 //window 로드 이벤트
 window.onload = function () {
+
   save_btn.disabled = true; // 비활성화
   if (ls !== null) {
     for (let j in JSON.parse(ls)) {

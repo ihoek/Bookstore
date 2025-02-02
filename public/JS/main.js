@@ -2,13 +2,13 @@
 let main_data_map = [];
 let local_data = window.localStorage.getItem("_data");
 
-//변수 선언
+//변수 선언 - DOM
 const container_main = document.querySelector(".container_main");
 const login = document.getElementById("login");
 const shopping_cart = document.getElementById("shop");
 const shop = document.getElementById("shop");
 const logoStyle = document.querySelector(".logoStyle");
-
+const cart_num = document.querySelector(".cart_num");
 
 //페이지 이동
 //logo 클릭 시 이동
@@ -53,6 +53,13 @@ shop.addEventListener("click", () => {
 
 //window 로드
 window.onload = function () { 
+  let cart_list_data = window.localStorage.getItem("cart_data");
+  let cart_list = JSON.parse(cart_list_data);
+  let cart_num = document.querySelector(".cart_num");
+  //장바구니 숫자
+  cart_num.innerHTML= `<div>${cart_list.length}</div>`;
+
+
   //console.log(JSON.parse(local_data).length)
   if (JSON.parse(local_data).length === 0) {
     nulldataPrint();
