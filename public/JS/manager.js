@@ -9,7 +9,7 @@ const error_id = document.getElementById("error_id");
 
 //배열 선언 - localStorage
 let data_map = [];
-const id_arr = [];
+let id_arr = [];
 let dummy_map = [];
 let ls = window.localStorage.getItem("_data", data_map);
 
@@ -23,22 +23,22 @@ let modify_cnt = 0;
 
 //img arr
 const img_arr = [
-  "/Img/a_forecast_of_the_times.jpg",
-  "/Img/a_report_of_genius.jpg",
-  "/Img/Contradiction.jpg",
-  "/Img/don_t_say_goodbye.jpg",
-  "/Img/Here_comes_the_boy.jpg",
-  "/Img/strong_current.jpg",
-  "/Img/the_art_of_mind.jpg",
-  "/Img/Vegetarian.jpg",
-  "/Img/White.jpg",
-  "/Img/Your_Utopia.jpg",
-  "/Img/Fish_don't_exist.jpg",
-  "/Img/Human_disqualification.jpg",
-  "/Img/Little_Life1.jpg",
-  "/Img/Proof_of_the_sphere.jpg",
-  "/Img/the_psychology_of_money.jpg",
-  "/Img/Damien.jpg",
+  "./Img/a_forecast_of_the_times.jpg",
+  "./Img/a_report_of_genius.jpg",
+  "./Img/Contradiction.jpg",
+  "./Img/don_t_say_goodbye.jpg",
+  "./Img/Here_comes_the_boy.jpg",
+  "./Img/strong_current.jpg",
+  "./Img/the_art_of_mind.jpg",
+  "./Img/Vegetarian.jpg",
+  "./Img/White.jpg",
+  "./Img/Your_Utopia.jpg",
+  "./Img/Fish_don't_exist.jpg",
+  "./Img/Human_disqualification.jpg",
+  "./Img/Little_Life1.jpg",
+  "./Img/Proof_of_the_sphere.jpg",
+  "./Img/the_psychology_of_money.jpg",
+  "./Img/Damien.jpg",
 ];
 
 
@@ -65,13 +65,13 @@ function dataPrint() {
       return `
       <div class="table_data">
           <div class="inputImg"><img class="imgstyle" src="${item.img}" alt="${item.img}"></div>
-          <div class="inputName" id = inputname${item._id}>${item.name}</div>
-          <div class="inputPrice" id = inputprice${item._id}>${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
-          <div class="inputContent" id = inputcontent${item._id}>${item.content}</div>
+          <div class="inputName" id = inputname${item.id}>${item.name}</div>
+          <div class="inputPrice" id = inputprice${item.id}>${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+          <div class="inputContent" id = inputcontent${item.id}>${item.content}</div>
           
         <div class="data_btn">
-          <button class="btnCor" id = modify_${item._id} onClick = "modify_fuc(${item._id})">수정</button>
-          <button class="btnDel" id = delete_${item._id} onClick = "delete_fuc(${item._id})">삭제</button>
+          <button class="btnCor" id = modify_${item.id} onClick = "modify_fuc(${item.id})">수정</button>
+          <button class="btnDel" id = delete_${item.id} onClick = "delete_fuc(${item.id})">삭제</button>
         </div>
       </div>
       `;
@@ -134,7 +134,7 @@ function jugment(content) {
   let cnt = 0;
   //content -> infoData 현재 입력되 값 total -> data_map 전체 데이터 값
   //id 중복 판단
-  if (id_arr.slice(0, id_arr.length - 1).includes(content._id)) {
+  if (id_arr.slice(0, id_arr.length - 1).includes(content.id)) {
     error_id.innerText = "아이디를 중복 입력하셨습니다.";
     cnt++;
   } else {
@@ -235,7 +235,7 @@ function modify_fuc(event) {
 
     //localStorage
     let new_data = data_map.map((element) => {
-      if (Number(element._id) === event) {
+      if (Number(element.id) === event) {
         return {
           ...element,
           name: newValue_name,
@@ -257,7 +257,7 @@ function modify_fuc(event) {
 //삭제 버튼 클릭 함수
 function delete_fuc(event) {
 
-  const new_data = data_map.filter((item) => Number(item._id) !== event);
+  const new_data = data_map.filter((item) => Number(item.id) !== event);
 
   data_map = new_data;
   const del = document.getElementById(`delete_${event}`);
@@ -272,7 +272,7 @@ window.onload = function () {
   if (ls !== null) {
     for (let j in JSON.parse(ls)) {
       data_map.push(JSON.parse(ls)[j]);
-      id_arr.push(data_map[j]._id);
+      id_arr.push(data_map[j].id);
     }
   }
 
@@ -285,14 +285,14 @@ window.onload = function () {
     const randomNumber = Math.floor(Math.random()*16);
     let infoData = {
       img: img_arr[randomNumber],
-      _id: id_input.value,
+      id: id_input.value,
       name: name_input.value,
       price: price_input.value,
       content: content_input.value,
       heart_chk : false, //main 페이지의 배열 초기값 세팅
       heart_src : "./Img/heart.png",
     };
-    id_arr.push(infoData._id);
+    id_arr.push(infoData.id);
     data_map.push(infoData);
     jugment(infoData);
 

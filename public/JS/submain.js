@@ -40,7 +40,7 @@ function dataPrint(item){
         <div class="row"><div>상품명</div><div>${item.name}</div></div>
         <div class="row"><div>가격</div><div>${item.price}</div></div>
         <div class="row"><div>상세설명</div><div>${item.content}</div></div>
-        <button id="shop_btn${item._id}">장바구니</button>
+        <button id="shop_btn${item.id}">장바구니</button>
     `
 }
 
@@ -48,7 +48,7 @@ function dataPrint(item){
 //window 화면 로드 함수
 window.onload = function (){
     //장바구니 숫자
-    cart_num.innerHTML= `<div>${cart_data.length}</div>`;
+    //cart_num.innerHTML= `<div>${cart_data.length}</div>`;
 
     if(cart_list_data !== null){//이미 값이 존재할 경우
         JSON.parse(cart_list_data).map((element) => {
@@ -59,16 +59,16 @@ window.onload = function (){
     }
     //dataPrint 메인 화면 구성 
     JSON.parse(local_data).map((element) => {
-        if(Number(element._id) === Number(urlParams.get("id"))){
+        if(Number(element.id) === Number(urlParams.get("id"))){
             //해당하는 파라미터의 값인 경우 - 해당 id값에 따른 localStorage값이 나와야함
             
             //console.log("해당하는 id값", Number(element._id));
             //console.log("element",element)
             dataPrint(element);
             
-            const shop_btn = document.getElementById(`shop_btn${element._id}`);
+            const shop_btn = document.getElementById(`shop_btn${element.id}`);
             shop_btn.addEventListener("click", () => {
-                shop_basket(element._id);
+                shop_basket(element.id);
             })
             
         }
@@ -84,9 +84,9 @@ function shop_basket(item){
         alert("이미 입력된 값입니다.");
     }else{
         JSON.parse(local_data).map((element) => {
-            if(Number(element._id) === Number(item)){
+            if(Number(element.id) === Number(item)){
                 let infoData = {
-                    id : element._id,
+                    id : element.id,
                     name : element.name,
                     price : element.price,
                     content : element.content,
