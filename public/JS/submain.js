@@ -8,6 +8,9 @@ const shop = document.getElementById("shop");
 const cart_num = document.querySelector(".cart_num");
 const logoStyle = document.querySelector(".logoStyle");
 const login = document.getElementById("login");
+const inquiry = document.getElementById("inquiry");
+const faq = document.getElementById("faq");
+const used = document.getElementById("used");
 
 //변수 선언 - localStorage
 let local_data = window.localStorage.getItem("_data");
@@ -35,11 +38,13 @@ login.addEventListener("click", () => {
 //메인 화면 구성 함수
 function dataPrint(item) {
   container_main.innerHTML = `
-        <div class="main_image"><img class="imageStyle" src="${item.img}" alt="${item.img}"></div>
-        <div class="row"><div>상품명</div><div>${item.name}</div></div>
-        <div class="row"><div>가격</div><div>${item.price}</div></div>
-        <div class="row"><div>상세설명</div><div>${item.content}</div></div>
-        <button id="shop_btn${item.id}">장바구니</button>
+        <div class="main_image" onclick="MoveImage()"><img class="imageStyle" src="${item.img}" alt="${item.img}"></div>
+        <div class="product_info">
+          <div class="row"><div>상품명</div><div>${item.name}</div></div>
+          <div class="row"><div>가격</div><div>${item.price}</div></div>
+          <div class="row"><div>상세설명</div><div>${item.content}</div></div>
+          <button id="shop_btn${item.id}">장바구니</button>
+        </div>
     `;
 }
 
@@ -47,9 +52,9 @@ function dataPrint(item) {
 window.onload = function () {
   //장바구니 숫자
   if (cart_list_data === null) {
-    cart_num.innerHTML = "";
+    cart_num.innerHTML = "0";
   } else {
-    cart_num.innerHTML = `<div>${cart_list.length}</div>`;
+    cart_num.innerHTML = `<div>${cart_ls.length}</div>`;
   }
 
   if (cart_list_data !== null) {
@@ -83,7 +88,10 @@ function shop_basket(item) {
   arr.push(item);
   if (arr.slice(0, arr.length - 1).includes(item)) {
     //중복값이라면
-    alert("이미 입력된 값입니다.");
+    Swal.fire({
+      icon: "error",
+      title: "이미 장바구니에 넣었습니다.",
+    });
   } else {
     JSON.parse(local_data).map((element) => {
       if (Number(element.id) === Number(item)) {
@@ -100,10 +108,41 @@ function shop_basket(item) {
 
     window.localStorage.setItem("cart_data", JSON.stringify(cart_list));
     cart_num.innerHTML = `<div>${cart_list.length}</div>`;
-    console.log(arr);
+    //console.log(arr);
   }
 }
 
 shop.addEventListener("click", () => {
   window.location.href = "./shopping_basket";
+});
+
+//main image 클릭 함수
+function MoveImage() {
+  const mainImage = document.querySelector(".main_image");
+  const productInfo = document.querySelector(".product_info");
+
+  mainImage.classList.toggle("active");
+  productInfo.classList.toggle("active");
+}
+
+//footer 버튼 클릭
+inquiry.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "1:1 문의 준비중입니다",
+  });
+});
+
+faq.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "FAQ 준비중입니다",
+  });
+});
+
+used.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "중고서점 준비중입니다",
+  });
 });

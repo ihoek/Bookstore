@@ -9,6 +9,12 @@ const shopping_cart = document.getElementById("shop");
 const shop = document.getElementById("shop");
 const logoStyle = document.querySelector(".logoStyle");
 const cart_num = document.querySelector(".cart_num");
+const inquiry = document.getElementById("inquiry");
+const faq = document.getElementById("faq");
+const used = document.getElementById("used");
+
+let cart_list_data = window.localStorage.getItem("cart_data");
+let cart_list = JSON.parse(cart_list_data);
 
 //페이지 이동
 //logo 클릭 시 이동
@@ -22,22 +28,19 @@ function dataMainPrint() {
     .map((element) => {
       return `
     <div class="cardstyle">
-          <img class="cardimg" src="${element.img}" id = ${
-        element.id
-      } onclick="MovePage(${element.id})">
+          <img class="cardimg" 
+          src="${element.img}" 
+          id = ${element.id} 
+          onclick="MovePage(${element.id})">
+
           <div class="card_body">
-            <h5 class="card_title">${element.name}</h5>
-            <p class="card_content">${element.price.replace(
-              /\B(?=(\d{3})+(?!\d))/g,
-              ","
-            )}</p>
-            <img class="heartimg cardimg" src=${
-              element.heart_src
-            } alt="heart" id="heart${element.id}" onclick="heart(${
-        element.id
-      })">
+            
+            <img class="heartimg" 
+            src=${element.heart_src} 
+            alt="heart" id="heart${element.id}" 
+            onclick="heart(${element.id})">
           </div>
-      </div>`;
+    </div>`;
     })
     .join("");
 }
@@ -60,8 +63,12 @@ shop.addEventListener("click", () => {
 });
 
 //window 로드
-window.onload = function () {
-  //console.log(JSON.parse(local_data).length)
+window.onpageshow = function (event) {
+  //페이지 이동 감지 후 새로 고침
+  if (event.persisted == true) {
+    location.reload(); // 새로고침
+  }
+
   if (JSON.parse(local_data).length === 0) {
     nulldataPrint();
   } else {
@@ -81,17 +88,15 @@ window.onload = function () {
       main_data_map.push(infoData);
     });
 
-    dataMainPrint();
-    let cart_list_data = window.localStorage.getItem("cart_data");
-    let cart_list = JSON.parse(cart_list_data);
-    let cart_num = document.querySelector(".cart_num");
-    //console.log(cart_list_data);
+    console.log(cart_list);
+    console.log(cart_list.length);
     //장바구니 숫자
-    if (cart_list_data === null) {
-      cart_num.innerHTML = "";
+    if (cart_list_data === null || cart_list.length === 0) {
+      cart_num.innerHTML = `<div>0</div>`;
     } else {
       cart_num.innerHTML = `<div>${cart_list.length}</div>`;
     }
+    dataMainPrint();
   }
 };
 
@@ -99,19 +104,6 @@ window.onload = function () {
 function MovePage(item) {
   //item -> id값값
   window.location.href = `./submain?id=${item}`;
-  // const nowUrl = window.location.href.toString();
-  // const url = new URL(nowUrl)
-  // console.log(url)
-  //쿼리 스트링
-  // const searchParams = new URLSearchParams();
-  // searchParams.set("id", item);
-  //console.log(searchParams.get("id"))
-  //const queryString = new URLSearchParams("?id=0");
-  //const current_address = window.location.href;
-  //window.location = current_address + queryString
-  //window.location.href = `./submain.html`;
-  //console.log("queryString",queryString);
-  //console.log("current_address",current_address.toString() + queryString.toString())
 }
 
 //heart 클릭 이벤트
@@ -146,3 +138,25 @@ function heart(item) {
   main_data_map = new_data;
   window.localStorage.setItem("_data", JSON.stringify(new_data));
 }
+
+//footer 버튼 클릭
+inquiry.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "1:1 문의 준비중입니다",
+  });
+});
+
+faq.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "FAQ 준비중입니다",
+  });
+});
+
+used.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "중고서점 준비중입니다",
+  });
+});

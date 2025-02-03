@@ -1,28 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/CSS/shopping_basket.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/CSS/shopping_basket.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=42dot+Sans&family=Do+Hyeon&family=Gothic+A1:wght@500;800&family=Roboto+Condensed:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
     <title>장바구니</title>
     <!-- sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container_wrap">
-        <!-- header -->
-        <div class="header_menu">
-          <div class="logoStyle"><img class="imageStyle" src="./Img/logo.png" alt="logo"></div>
-          <div class="header_menu_right">
-            <div class="login_style"><img class="imageStyle" src="./Img/login.png" alt="login" id="login"></div>
-            <div class="login_style"><img class="imageStyle" src="./Img/shopping_cart.png" alt="shopping_cart" id="shop"></div>
-            <div class="cart_num"></div>
-          </div>
+      <!-- header -->
+      <div class="header_menu">
+        <div class="logoStyle">
+          <img class="imageStyle" src="./Img/logo.png" alt="logo" />
         </div>
-        <!-- main -->
-        <div class="container_main">
+        <div class="header_menu_right">
+          <div class="login_style">
+            <img
+              class="imageStyle"
+              src="./Img/login.png"
+              alt="login"
+              id="login"
+            />
+          </div>
+          <div class="login_style">
+            <img
+              class="imageStyle"
+              src="./Img/shopping_cart.png"
+              alt="shopping_cart"
+              id="shop"
+            />
+          </div>
+          <div class="cart_num"></div>
         </div>
       </div>
-</body>
-<script src="/JS/shopping_basket.js"></script>
+      <!-- main -->
+      <div class="container_main"></div>
+      <!-- footer -->
+      <div class="footer">
+        <div class="footer_left">
+          <div class="footer_left_top">
+            <div class="footer_left_big">Book</div>
+            <div class="footer_left_small">Step</div>
+          </div>
+          <div class="footer_text">
+            (15451) 서울특별시 서초구 반포대로 2222 Book Step
+          </div>
+          <div class="footer_text">
+            대표전화 02-3345-34343 | 사업자 등록 222-23424-23423
+          </div>
+          <div class="footer_text">
+            대표명 이정민 | 이메일 bokstep@bookstep.co.kr
+          </div>
+        </div>
+
+        <div class="footer_right">
+          <button class="footer_btn" id="inquiry">1:1 문의</button>
+          <button class="footer_btn" id="faq">FAQ</button>
+          <button class="footer_btn" id="used">중고서점</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="/JS/shopping_basket.js"></script>
 </html>
