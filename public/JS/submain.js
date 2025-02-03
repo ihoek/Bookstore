@@ -105,7 +105,10 @@ function shop_basket(item) {
         cart_list.push(infoData);
       }
     });
-
+    Swal.fire({
+      icon: "success",
+      title: "장바구니에 넣었습니다.",
+    });
     window.localStorage.setItem("cart_data", JSON.stringify(cart_list));
     cart_num.innerHTML = `<div>${cart_list.length}</div>`;
     //console.log(arr);

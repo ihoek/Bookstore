@@ -40,7 +40,6 @@ const img_arr = [
   "./Img/Damien.jpg",
 ];
 
-
 // 테이블 헤드 생성
 const tableWrap = document.querySelector(".main-wrap");
 tableWrap.innerHTML = ` 
@@ -63,14 +62,24 @@ function dataPrint() {
     .map((item) => {
       return `
       <div class="table_data">
-          <div class="inputImg"><img class="imgstyle" src="${item.img}" alt="${item.img}"></div>
+          <div class="inputImg">
+            <img class="imgstyle" src="${item.img}" 
+            alt="${item.img}">
+          </div>
           <div class="inputName" id = inputname${item.id}>${item.name}</div>
-          <div class="inputPrice" id = inputprice${item.id}>${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
-          <div class="inputContent" id = inputcontent${item.id}>${item.content}</div>
+          <div class="inputPrice" 
+            id = inputprice${item.id}>
+            ${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </div>
+          <div class="inputContent" id = inputcontent${item.id}>
+            ${item.content}
+          </div>
           
         <div class="data_btn">
-          <button class="btnCor" id = modify_${item.id} onClick = "modify_fuc(${item.id})">수정</button>
-          <button class="btnDel" id = delete_${item.id} onClick = "delete_fuc(${item.id})">삭제</button>
+          <button class="btnCor" id = modify_${item.id} 
+          onClick = "modify_fuc(${item.id})">수정</button>
+          <button class="btnDel" id = delete_${item.id} 
+          onClick = "delete_fuc(${item.id})">삭제</button>
         </div>
       </div>
       `;
@@ -105,7 +114,7 @@ function printPrice() {
   } else {
     btn_active[1] = false;
   }
-  
+
   if (btn_active.indexOf(false) === -1) {
     //false 찾지 못한 경우 즉, 모두 True인 경우
     save_btn.disabled = false; // 활성화
@@ -161,7 +170,7 @@ function modify_fuc(event) {
   const currentValue_price = price.textContent;
 
   if (modify_btn.innerText === "수정") {
-    modify_btn.innerHTML = "<div>수정완료</div>";
+    modify_btn.innerHTML = `<div class="btnCor">수정완료</div>`;
 
     // 기존 데이터를 input 필드로 교체
     content.innerHTML = `<input class="modify_input${event}" value="${currentValue}"/><div class="modify_input_fuc"></div>`;
@@ -178,8 +187,6 @@ function modify_fuc(event) {
     const inputField_price = price.querySelector(`.modify_input_price${event}`);
     const messageDiv_price = price.querySelector(".modify_input_price_fuc");
 
-    
-
     // name - 공백 확인
     inputField_name.addEventListener("input", () => {
       const newValue_name = inputField_name.value;
@@ -192,8 +199,8 @@ function modify_fuc(event) {
       }
     });
 
-     // price 
-     inputField_price.addEventListener("input", () => {
+    // price
+    inputField_price.addEventListener("input", () => {
       const newValue_price = inputField_price.value;
       if (newValue_price.length < 0) {
         messageDiv_price.innerText = "글자를 입력하시오.";
@@ -204,8 +211,8 @@ function modify_fuc(event) {
       }
     });
 
-     // content -  입력값 글자 수 검사
-     inputField.addEventListener("input", () => {
+    // content -  입력값 글자 수 검사
+    inputField.addEventListener("input", () => {
       const newValue = inputField.value;
       if (newValue.length < 0) {
         messageDiv.innerText = "글자를 입력하시오.";
@@ -215,19 +222,23 @@ function modify_fuc(event) {
         modify_btn.disabled = false;
       }
     });
-
   } else {
     // 수정 완료 상태
     const newValue = content.querySelector(`.modify_input${event}`).value;
     const newValue_name = name.querySelector(
       `.modify_input_name${event}`
     ).value;
-    const newValue_price = price.querySelector(`.modify_input_price${event}`).value;
+    const newValue_price = price.querySelector(
+      `.modify_input_price${event}`
+    ).value;
 
     //innerHTML 수정
     content.innerHTML = `<div>${newValue}</div>`;
     name.innerHTML = `<div>${newValue_name}</div>`;
-    price.innerHTML = `<div>${newValue_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>`;
+    price.innerHTML = `<div>${newValue_price.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ","
+    )}</div>`;
 
     //버튼 수정
     modify_btn.innerHTML = "<div>수정</div>";
@@ -257,7 +268,7 @@ function modify_fuc(event) {
 function delete_fuc(event) {
   //event === item.id
   const new_data = data_map.filter((item) => Number(item.id) !== event);
-  id_arr.filter((item) => Number(item) !== event)
+  id_arr.filter((item) => Number(item) !== event);
 
   data_map = new_data;
   const del = document.getElementById(`delete_${event}`);
@@ -268,39 +279,37 @@ function delete_fuc(event) {
 
 //window 로드 이벤트
 window.onload = function () {
-
   save_btn.disabled = true; // 비활성화
   if (ls !== null) {
     for (let j in JSON.parse(ls)) {
       data_map.push(JSON.parse(ls)[j]);
       id_arr.push(data_map[j].id);
     }
-    console.log("data", data_map)
-    console.log("id_arr",id_arr);
+    console.log("data", data_map);
+    console.log("id_arr", id_arr);
   }
 
   dataPrint();
-  
+
   //버튼 클릭 이벤트
   save_btn.addEventListener("click", () => {
     save_btn.disabled = true; // 비활성화
     btn_active = [false, false, false];
-    const randomNumber = Math.floor(Math.random()*16);
+    const randomNumber = Math.floor(Math.random() * 16);
     let infoData = {
       img: img_arr[randomNumber],
       id: id_input.value,
       name: name_input.value,
       price: price_input.value,
       content: content_input.value,
-      heart_chk : false, //main 페이지의 배열 초기값 세팅
-      heart_src : "./Img/heart.png",
+      heart_chk: false, //main 페이지의 배열 초기값 세팅
+      heart_src: "./Img/heart.png",
     };
     id_arr.push(infoData.id);
     data_map.push(infoData);
     jugment(infoData);
 
     window.localStorage.setItem("_data", JSON.stringify(data_map));
-
 
     //데이터 data_map에 push 후 해당 input 초기화
     id_input.value = "";
