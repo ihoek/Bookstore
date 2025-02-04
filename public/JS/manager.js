@@ -11,7 +11,7 @@ const error_id = document.getElementById("error_id");
 let data_map = [];
 let id_arr = [];
 let ls = window.localStorage.getItem("_data", data_map);
-
+let cart_list_data = window.localStorage.getItem("cart_data");
 //버튼
 const save_btn = document.getElementById("save");
 let btn_active = [false, false, false];
@@ -40,6 +40,24 @@ const img_arr = [
   "./Img/Damien.jpg",
 ];
 
+const genre_arr = [
+  "경제",
+  "인문",
+  "소설",
+  "소설",
+  "소설",
+  "소설",
+  "인문",
+  "소설",
+  "소설",
+  "소설",
+  "자연과학",
+  "소설",
+  "소설",
+  "소설",
+  "경제",
+  "소설",
+];
 // 테이블 헤드 생성
 const tableWrap = document.querySelector(".main-wrap");
 tableWrap.innerHTML = ` 
@@ -269,11 +287,13 @@ function delete_fuc(event) {
   //event === item.id
   const new_data = data_map.filter((item) => Number(item.id) !== event);
   id_arr.filter((item) => Number(item) !== event);
+  //const new_cart_data = JSON.parse(cart_list_data).filter(item.id !== event);
 
   data_map = new_data;
   const del = document.getElementById(`delete_${event}`);
   del.parentNode.parentNode.remove(del);
 
+  //window.localStorage.setItem("cart_data", JSON.stringify(new_cart_data));
   window.localStorage.setItem("_data", JSON.stringify(new_data));
 }
 
@@ -296,6 +316,8 @@ window.onload = function () {
     save_btn.disabled = true; // 비활성화
     btn_active = [false, false, false];
     const randomNumber = Math.floor(Math.random() * 16);
+    console.log("randomNumber", randomNumber);
+    console.log("random_arr", genre_arr[randomNumber]);
     let infoData = {
       img: img_arr[randomNumber],
       id: id_input.value,
@@ -304,6 +326,7 @@ window.onload = function () {
       content: content_input.value,
       heart_chk: false, //main 페이지의 배열 초기값 세팅
       heart_src: "./Img/heart.png",
+      genre: genre_arr[randomNumber],
     };
     id_arr.push(infoData.id);
     data_map.push(infoData);

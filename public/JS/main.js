@@ -12,6 +12,11 @@ const cart_num = document.querySelector(".cart_num");
 const inquiry = document.getElementById("inquiry");
 const faq = document.getElementById("faq");
 const used = document.getElementById("used");
+const category_all = document.getElementById("category_all");
+const category_economy = document.getElementById("category_economy");
+const category_humanities = document.getElementById("category_humanities");
+const category_novel = document.getElementById("category_novel");
+const category_science = document.getElementById("category_science");
 
 let cart_list_data = window.localStorage.getItem("cart_data");
 let cart_list = JSON.parse(cart_list_data);
@@ -62,8 +67,158 @@ shop.addEventListener("click", () => {
   window.location.href = "./shopping_basket";
 });
 
+//전체 선택
+category_all.addEventListener("click", () => {
+  category_all.style.borderBottom = "3px solid #6ca6cd";
+  category_economy.style.borderBottom = "none";
+  category_humanities.style.borderBottom = "none";
+  category_novel.style.borderBottom = "none";
+  category_science.style.borderBottom = "none";
+  let allBook = main_data_map;
+  if (allBook.length === 0) {
+    nulldataPrint();
+  } else {
+    dataMainPrint();
+  }
+});
+
+//경제 선택
+category_economy.addEventListener("click", () => {
+  category_economy.style.borderBottom = "3px solid #6ca6cd";
+  category_all.style.borderBottom = "none";
+  category_humanities.style.borderBottom = "none";
+  category_novel.style.borderBottom = "none";
+  category_science.style.borderBottom = "none";
+  let economyBooks = main_data_map.filter(
+    (element) => element.genre === "경제"
+  );
+  if (economyBooks.length === 0) {
+    nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
+  } else {
+    container_main.innerHTML = economyBooks
+      .map((element) => {
+        return `
+      <div class="cardstyle">
+            <img class="cardimg" 
+            src="${element.img}" 
+            id = ${element.id} 
+            onclick="MovePage(${element.id})">
+  
+            <div class="card_body">
+              
+              <img class="heartimg" 
+              src=${element.heart_src} 
+              alt="heart" id="heart${element.id}" 
+              onclick="heart(${element.id})">
+            </div>
+      </div>`;
+      })
+      .join("");
+  }
+});
+//인문 선택
+category_humanities.addEventListener("click", () => {
+  category_humanities.style.borderBottom = "3px solid #6ca6cd";
+  category_economy.style.borderBottom = "none";
+  category_all.style.borderBottom = "none";
+  category_novel.style.borderBottom = "none";
+  category_science.style.borderBottom = "none";
+  let humanBooks = main_data_map.filter((element) => element.genre === "인문");
+  if (humanBooks.length === 0) {
+    nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
+  } else {
+    container_main.innerHTML = humanBooks
+      .map((element) => {
+        return `
+      <div class="cardstyle">
+            <img class="cardimg" 
+            src="${element.img}" 
+            id = ${element.id} 
+            onclick="MovePage(${element.id})">
+  
+            <div class="card_body">
+              
+              <img class="heartimg" 
+              src=${element.heart_src} 
+              alt="heart" id="heart${element.id}" 
+              onclick="heart(${element.id})">
+            </div>
+      </div>`;
+      })
+      .join("");
+  }
+});
+
+//소설 선택
+category_novel.addEventListener("click", () => {
+  category_novel.style.borderBottom = "3px solid #6ca6cd";
+  category_economy.style.borderBottom = "none";
+  category_all.style.borderBottom = "none";
+  category_humanities.style.borderBottom = "none";
+  category_science.style.borderBottom = "none";
+  let novelBooks = main_data_map.filter((element) => element.genre === "소설");
+  if (novelBooks.length === 0) {
+    nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
+  } else {
+    container_main.innerHTML = novelBooks
+      .map((element) => {
+        return `
+      <div class="cardstyle">
+            <img class="cardimg" 
+            src="${element.img}" 
+            id = ${element.id} 
+            onclick="MovePage(${element.id})">
+  
+            <div class="card_body">
+              
+              <img class="heartimg" 
+              src=${element.heart_src} 
+              alt="heart" id="heart${element.id}" 
+              onclick="heart(${element.id})">
+            </div>
+      </div>`;
+      })
+      .join("");
+  }
+});
+
+//자연과학 선택
+category_science.addEventListener("click", () => {
+  category_science.style.borderBottom = "3px solid #6ca6cd";
+  category_economy.style.borderBottom = "none";
+  category_all.style.borderBottom = "none";
+  category_humanities.style.borderBottom = "none";
+  category_novel.style.borderBottom = "none";
+  let scienceBooks = main_data_map.filter(
+    (element) => element.genre === "자연과학"
+  );
+  if (scienceBooks.length === 0) {
+    nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
+  } else {
+    container_main.innerHTML = scienceBooks
+      .map((element) => {
+        return `
+      <div class="cardstyle">
+            <img class="cardimg" 
+            src="${element.img}" 
+            id = ${element.id} 
+            onclick="MovePage(${element.id})">
+  
+            <div class="card_body">
+              
+              <img class="heartimg" 
+              src=${element.heart_src} 
+              alt="heart" id="heart${element.id}" 
+              onclick="heart(${element.id})">
+            </div>
+      </div>`;
+      })
+      .join("");
+  }
+});
+
 //window 로드
-window.onpageshow = function (event) {
+window.onload = function (event) {
   //페이지 이동 감지 후 새로 고침
   if (event.persisted == true) {
     location.reload(); // 새로고침
@@ -83,6 +238,7 @@ window.onpageshow = function (event) {
         heart_src: element.heart_src,
         content: element.content,
         heart_chk: element.heart_chk,
+        genre: element.genre,
       };
 
       main_data_map.push(infoData);
@@ -96,7 +252,8 @@ window.onpageshow = function (event) {
     } else {
       cart_num.innerHTML = `<div>${cart_list.length}</div>`;
     }
-    dataMainPrint();
+    //dataMainPrint();
+    category_all.click();
   }
 };
 

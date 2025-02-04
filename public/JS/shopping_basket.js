@@ -54,7 +54,9 @@ function dataPrint() {
     .map((item) => {
       return `
          <div class="table_data">
-            <div class="inputImg">
+            <div class="inputImg cont_image"  onClick="Move_subpage(${
+              item.id
+            })">
               <img class="imgstyle" src="${item.img}" alt="${item.img}">
             </div>
             <div class="inputName" id = inputname${item.id}>${item.name}</div>
@@ -82,6 +84,7 @@ function delete_fuc(item) {
   //console.log(item);
   const tbody = document.querySelector(".tBody");
   const new_data = cart_data.filter((element) => Number(element.id) !== item);
+  const allDeleteBtn = document.getElementById("all_delete");
   //console.log(new_data)
   cart_data = new_data;
 
@@ -93,18 +96,27 @@ function delete_fuc(item) {
 
   if (cart_data.length === 0) {
     tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`;
+    allDeleteBtn.style.display = "none";
   }
 }
 
 //모두 삭제 버튼 함수
 function All_delete() {
   const tbody = document.querySelector(".tBody");
+  const allDeleteBtn = document.getElementById("all_delete");
   tbody.innerHTML = "";
 
   cart_data.length = 0;
   tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`;
   window.localStorage.setItem("cart_data", JSON.stringify(cart_data));
   cart_num.innerHTML = `<div>${cart_data.length}</div>`;
+  allDeleteBtn.style.display = "none";
+}
+//이미지 이동 함수
+function Move_subpage(item) {
+  //해당 id에 해당하는 sub_page로 이동하기
+  //item -> item.id
+  window.location.href = `./submain?id=${item}`;
 }
 
 //window onload 함수
@@ -115,8 +127,8 @@ window.onload = function () {
   const tbody = document.querySelector(".tBody");
   const allDeleteBtn = document.getElementById("all_delete");
   if (cart_data.length === 0 || cart_data === null) {
-    tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`;
     allDeleteBtn.style.display = "none";
+    tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`;
   } else {
     dataPrint();
     allDeleteBtn.style.display = "block";
