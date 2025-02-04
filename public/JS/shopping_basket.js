@@ -54,20 +54,22 @@ function dataPrint() {
     .map((item) => {
       return `
          <div class="table_data">
-            <div class="inputImg"><img class="imgstyle" src="${
-              item.img
-            }" alt="${item.img}"></div>
+            <div class="inputImg">
+              <img class="imgstyle" src="${item.img}" alt="${item.img}">
+            </div>
             <div class="inputName" id = inputname${item.id}>${item.name}</div>
-            <div class="inputPrice" id = inputprice${item.id}>${item.price
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
-            <div class="inputContent" id = inputcontent${item.id}>${
-        item.content
-      }</div>
+            <div class="inputPrice" id = inputprice${item.id}>
+              ${item.price
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+            <div class="inputContent" id = inputcontent${item.id}>
+              ${item.content}
+            </div>
             <div class="data_btn">
-                <button class="btnDel" id = delete_${
-                  item.id
-                } onClick = "delete_fuc(${item.id})">삭제</button>
+                <button class="btnDel" 
+                  id = delete_${item.id} 
+                  onClick = "delete_fuc(${item.id})">삭제
+                </button>
             </div>
         </div>
         `;
@@ -111,11 +113,13 @@ window.onload = function () {
   cart_num.innerHTML = `<div>${cart_data.length}</div>`;
 
   const tbody = document.querySelector(".tBody");
-
+  const allDeleteBtn = document.getElementById("all_delete");
   if (cart_data.length === 0 || cart_data === null) {
     tbody.innerHTML = `<div class="empty_img"><img class="imageStyle" src="/Img/empty.png" alt="shopping_cart"></div>`;
+    allDeleteBtn.style.display = "none";
   } else {
     dataPrint();
+    allDeleteBtn.style.display = "block";
   }
 };
 
