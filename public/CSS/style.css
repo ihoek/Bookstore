@@ -120,6 +120,8 @@ input:focus {
   text-align: center;
   border-bottom: 2px solid #87cefa;
   padding: 10px 0px;
+  justify-content: center;
+  text-align: center;
 }
 .row_image {
   display: flex;
@@ -152,10 +154,16 @@ input:focus {
   display: flex;
   flex-direction: row;
   padding: 10px 0px;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 1px solid rgb(177, 177, 177);
 }
 .imgstyle {
   width: 100%;
   height: 100%;
+}
+.dataImage {
+  width: 120px;
 }
 .inputImg {
   display: flex;
@@ -163,28 +171,45 @@ input:focus {
   text-align: center;
   justify-content: center;
 }
+
 .inputName {
   display: flex;
   width: 20%;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
+  align-items: center;
+}
+.input_Name_con,
+.input_Price_con {
+  display: flex;
+  width: 100%;
 }
 .inputPrice {
   display: flex;
+  flex-direction: column;
   width: 20%;
   text-align: center;
   justify-content: center;
+  align-items: center;
 }
 .inputContent {
   display: flex;
   width: 20%;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
+  align-items: center;
 }
 
+.input_Content_con {
+  display: flex;
+  width: 100%;
+}
 .data_btn {
   display: flex;
   width: 20%;
+  align-items: center;
 }
 
 /* 버튼 내부 스타일 */
@@ -193,6 +218,7 @@ input:focus {
   display: flex;
   justify-content: center;
   text-align: center;
+  align-items: center;
   width: 80px;
   height: 40px;
   font-size: 12px;
@@ -216,21 +242,21 @@ input:focus {
 .table .tBody div div:last-child {
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
   gap: 5px;
 }
 
 .inputContent > input {
   display: block;
-  width: 100px;
+  width: 90%;
 }
 .inputPrice > input {
   display: block;
-  width: 80px;
+  width: 90%;
 }
 .inputName > input {
   display: block;
-  width: 80px;
+  width: 90%;
 }
 .modify_input_fuc,
 .modify_input_name {

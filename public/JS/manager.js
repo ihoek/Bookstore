@@ -188,12 +188,12 @@ function modify_fuc(event) {
   const currentValue_price = price.textContent;
 
   if (modify_btn.innerText === "수정") {
-    modify_btn.innerHTML = `<div class="btnCor">수정완료</div>`;
+    modify_btn.innerText = "수정완료";
 
     // 기존 데이터를 input 필드로 교체
-    content.innerHTML = `<input class="modify_input${event}" value="${currentValue}"/><div class="modify_input_fuc"></div>`;
-    name.innerHTML = `<input class="modify_input_name${event}" value="${currentValue_name}"/><div class="modify_input_name_fuc"></div>`;
-    price.innerHTML = `<input class="modify_input_price${event}" value="${currentValue_price}"/><div class="modify_input_price_fuc"></div>`;
+    content.innerHTML = `<input class="modify_input${event}" value="${currentValue.trim()}"/><div class="modify_input_fuc"></div>`;
+    name.innerHTML = `<input class="modify_input_name${event}" value="${currentValue_name.trim()}"/><div class="modify_input_name_fuc"></div>`;
+    price.innerHTML = `<input class="modify_input_price${event}" value="${currentValue_price.trim()}"/><div class="modify_input_price_fuc"></div>`;
 
     //input content
     const inputField = content.querySelector(`.modify_input${event}`);
@@ -208,7 +208,7 @@ function modify_fuc(event) {
     // name - 공백 확인
     inputField_name.addEventListener("input", () => {
       const newValue_name = inputField_name.value;
-      if (newValue_name.length === 0) {
+      if (newValue_name.length <= 0) {
         messageDiv_name.innerText = "글자를 입력하시오";
         modify_btn.disabled = true;
       } else {
@@ -220,7 +220,7 @@ function modify_fuc(event) {
     // price
     inputField_price.addEventListener("input", () => {
       const newValue_price = inputField_price.value;
-      if (newValue_price.length < 0) {
+      if (newValue_price.length <= 0) {
         messageDiv_price.innerText = "글자를 입력하시오.";
         modify_btn.disabled = true;
       } else {
@@ -232,7 +232,7 @@ function modify_fuc(event) {
     // content -  입력값 글자 수 검사
     inputField.addEventListener("input", () => {
       const newValue = inputField.value;
-      if (newValue.length < 0) {
+      if (newValue.length <= 0) {
         messageDiv.innerText = "글자를 입력하시오.";
         modify_btn.disabled = true;
       } else {
@@ -242,13 +242,15 @@ function modify_fuc(event) {
     });
   } else {
     // 수정 완료 상태
-    const newValue = content.querySelector(`.modify_input${event}`).value;
-    const newValue_name = name.querySelector(
-      `.modify_input_name${event}`
-    ).value;
-    const newValue_price = price.querySelector(
-      `.modify_input_price${event}`
-    ).value;
+    const newValue = content
+      .querySelector(`.modify_input${event}`)
+      .value.trim();
+    const newValue_name = name
+      .querySelector(`.modify_input_name${event}`)
+      .value.trim();
+    const newValue_price = price
+      .querySelector(`.modify_input_price${event}`)
+      .value.trim();
 
     //innerHTML 수정
     content.innerHTML = `<div>${newValue}</div>`;
@@ -259,7 +261,7 @@ function modify_fuc(event) {
     )}</div>`;
 
     //버튼 수정
-    modify_btn.innerHTML = "<div>수정</div>";
+    modify_btn.innerText = "수정";
 
     //localStorage
     let new_data = data_map.map((element) => {
@@ -287,13 +289,11 @@ function delete_fuc(event) {
   //event === item.id
   const new_data = data_map.filter((item) => Number(item.id) !== event);
   id_arr.filter((item) => Number(item) !== event);
-  //const new_cart_data = JSON.parse(cart_list_data).filter(item.id !== event);
 
   data_map = new_data;
   const del = document.getElementById(`delete_${event}`);
   del.parentNode.parentNode.remove(del);
 
-  //window.localStorage.setItem("cart_data", JSON.stringify(new_cart_data));
   window.localStorage.setItem("_data", JSON.stringify(new_data));
 }
 

@@ -244,16 +244,13 @@ window.onload = function (event) {
       main_data_map.push(infoData);
     });
 
-    console.log(cart_list);
-    console.log(cart_list.length);
-    //장바구니 숫자
-    if (cart_list_data === null || cart_list.length === 0) {
-      cart_num.innerHTML = `<div>0</div>`;
-    } else {
-      cart_num.innerHTML = `<div>${cart_list.length}</div>`;
-    }
-    //dataMainPrint();
     category_all.click();
+  }
+  //장바구니 숫자
+  if (cart_list_data === null || cart_list.length === 0) {
+    cart_num.innerHTML = "0";
+  } else {
+    cart_num.innerHTML = `<div>${cart_list.length}</div>`;
   }
 };
 
