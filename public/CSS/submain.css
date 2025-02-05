@@ -3,15 +3,23 @@ body {
   background-color: #f9f9f9;
   color: #333;
 }
+html,
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 * {
   box-sizing: border-box;
 }
 .container_wrap {
   width: 100%;
-  margin: 0 auto;
+  margin: 0px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 
 .header_menu {
@@ -150,6 +158,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   background-color: #f2f2f2;
+  margin-top: auto;
 }
 .footer_left_top {
   flex-direction: row;
