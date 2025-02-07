@@ -69,5 +69,5 @@
 ![shopping-counter](https://github.com/user-attachments/assets/5c5f71a7-0a50-4144-a69c-dfe1f96c7377)
 
 
-
+<div>*** 모든 Js 코드는 AI의 도움없이 작성함을 알림</div>
 
