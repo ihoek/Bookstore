@@ -3,6 +3,7 @@ const id_input = document.getElementById("id_input");
 const name_input = document.getElementById("name_input");
 const price_input = document.getElementById("price_input");
 const content_input = document.getElementById("content_input");
+const excel_exprot = document.getElementById("excel_exprot");
 
 //error div
 const error_id = document.getElementById("error_id");
@@ -343,3 +344,40 @@ window.onload = function () {
     dataPrint();
   });
 };
+
+//엑셀 내보내기 버튼
+excel_exprot.addEventListener("click", () => {
+  console.log("엑셀 내보내기 버튼 실행");
+  const export_parse_data = JSON.parse(ls);
+
+  let CSV = "";
+  let row = "";
+
+  //첫 번째 행 작성 - title
+  for (let index in export_parse_data[0]) {
+    row += index + ",";
+  }
+  row = row.slice(0, -1);
+  CSV += row + "\r\n";
+
+  //해당 내용 작성
+  for (let i = 0; i < export_parse_data.length; i++) {
+    let row = "";
+    for (let index in export_parse_data[i]) {
+      row += '"' + export_parse_data[i][index] + '",';
+    }
+
+    row.slice(0, row.length - 1);
+    CSV += row + "\r\n";
+  }
+
+  let uri = "data:text/csv;charset=utf-8,\uFEFF" + encodeURI(CSV); //encoding 변경 - 한글 가능
+  let link = document.createElement("a");
+  link.href = uri;
+  link.style = "visibility:hidden";
+  link.download = "execl_export.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});

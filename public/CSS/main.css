@@ -219,6 +219,42 @@ body {
   background-color: #6ca6cd;
   color: white;
 }
+.container_pagination {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.pagination_left,
+.pagination_right {
+  width: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination_mid {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.paginav_left,
+.paginav_mid,
+.paginav_right {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 50%;
+}
+.paginav_mid:hover {
+  background-color: #333;
+}
 
 @media screen and (max-width: 1024px) {
   .container_main {

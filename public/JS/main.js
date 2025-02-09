@@ -1,6 +1,7 @@
 //index 로컬스토로지
 let main_data_map = [];
 let local_data = window.localStorage.getItem("_data");
+let local_data_len = JSON.parse(local_data).length;
 
 //변수 선언 - DOM
 const container_main = document.querySelector(".container_main");
@@ -17,6 +18,10 @@ const category_economy = document.getElementById("category_economy");
 const category_humanities = document.getElementById("category_humanities");
 const category_novel = document.getElementById("category_novel");
 const category_science = document.getElementById("category_science");
+const container_pagination = document.querySelector(".container_pagination");
+const pagination_left = document.querySelector(".pagination_left");
+const pagination_mid = document.querySelector(".pagination_mid");
+const pagination_right = document.querySelector(".pagination_right");
 
 let cart_list_data = window.localStorage.getItem("cart_data");
 let cart_list = JSON.parse(cart_list_data);
@@ -28,31 +33,290 @@ logoStyle.addEventListener("click", () => {
 });
 
 //값이 있을 때 메인 화면 구성
-function dataMainPrint() {
+function dataMainPrint(page_min) {
+  //console.log("page_min", page_min);
+  pagination_mid.innerHTML = "";
+  //console.log("local_data", JSON.parse(local_data).length);
+  //console.log("page_min", page_min); //처음값 나중값 출력
   container_main.innerHTML = main_data_map
-    .map((element) => {
-      return `
-    <div class="cardstyle">
-          <img class="cardimg" 
-          src="${element.img}" 
-          id = ${element.id} 
-          onclick="MovePage(${element.id})">
+    .map((element, index) => {
+      //console.log("index", index);
+      if (page_min <= index && index < page_min + 5) {
+        //해당 범위 내에만 출력
+        return `
+            <div class="cardstyle">
+                  <img class="cardimg" 
+                  src="${element.img}" 
+                  id = ${element.id} 
+                  onclick="MovePage(${element.id})">
 
-          <div class="card_body">
-            
-            <img class="heartimg" 
-            src=${element.heart_src} 
-            alt="heart" id="heart${element.id}" 
-            onclick="heart(${element.id})">
-          </div>
-    </div>`;
+                  <div class="card_body">
+                    
+                    <img class="heartimg" 
+                    src=${element.heart_src} 
+                    alt="heart" id="heart${element.id}" 
+                    onclick="heart(${element.id})">
+                  </div>
+            </div>
+            `;
+      }
     })
     .join("");
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min})"><</button>`;
+
+  for (let i = 1; i <= Math.ceil(local_data_len / 5); i++) {
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i})" id="pagi_btn${i}">${i}</button>`;
+  }
+  pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min})">></button>`;
+}
+
+//페이지네이션 이동 함수 - all
+function paginav(item) {
+  console.log(`page${item}`);
+  let cnt = (item - 1) * 5;
+
+  dataMainPrint(cnt);
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이동 함수 - 소설
+function paginav_cat_novel(item) {
+  console.log(`page${item}`);
+  let cnt = (item - 1) * 5;
+  dataNovelPrint(cnt);
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이동 함수 - 경제
+function paginav_cat_econo(item) {
+  console.log(`page${item}`);
+  let cnt = (item - 1) * 5;
+  dataEconoPrint(cnt);
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이동 함수 - 인문
+function paginav_cat_human(item) {
+  console.log(`page${item}`);
+  let cnt = (item - 1) * 5;
+  dataHumanPrint(cnt);
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이동 함수 - 자연과학
+function paginav_cat_scien(item) {
+  console.log(`page${item}`);
+  let cnt = (item - 1) * 5;
+  dataSciencePrint(cnt);
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이전 이동 함수
+function page_pre(current_page) {
+  //console.log("이전 클릭");
+  //console.log("current_page", current_page);
+  let page = Math.ceil(current_page - 5);
+  if (page < 0) {
+    alert("이전으로 갈 수 없습니다.");
+  } else {
+    dataMainPrint(page);
+    const paginav_btn = document.getElementById(`pagi_btn${current_page / 5}`);
+    paginav_btn.style.backgroundColor = "red";
+  }
+}
+
+//페이지네이션 다음 이동 함수
+function page_next(current_page) {
+  //console.log("다음 클릭");
+  console.log("current_page", current_page + 5); //현재 위치한 index 값
+  let page = current_page + 5;
+  if (page < local_data_len) {
+    console.log("pager", page);
+    dataMainPrint(page);
+    const paginav_btn = document.getElementById(
+      `pagi_btn${current_page / 5 + 2}`
+    );
+    paginav_btn.style.backgroundColor = "red";
+  } else {
+    alert("이후로 갈 수 없습니다.");
+  }
 }
 
 //값이 없을 때 메인 화면 구성
 function nulldataPrint() {
   container_main.innerHTML = `<div class="empty_style"><img class="imageStyle" src="./Img/empty.png" alt="empty"></div>`;
+  pagination_left.innerHTML = "";
+  pagination_mid.innerHTML = "";
+  pagination_right.innerHTML = "";
+}
+
+//카테고리 소설 선택 시 배열
+let novelBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "소설"
+);
+
+//카테고리 경제 선택 시 배열
+let economyBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "경제"
+);
+
+//카테고리 인문 선택 시 배열
+let humanBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "인문"
+);
+
+//카테고리 자연과학 선택 시 배열
+let scienceBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "자연과학"
+);
+
+//값이 있을 때 메인 화면 구성 - 경제
+function dataEconoPrint(page_min) {
+  pagination_mid.innerHTML = "";
+
+  container_main.innerHTML = economyBooks
+    .map((element, index) => {
+      if (page_min <= index && index < page_min + 5) {
+        //해당 범위 내에만 출력
+        return `
+            <div class="cardstyle">
+                  <img class="cardimg" 
+                  src="${element.img}" 
+                  id = ${element.id} 
+                  onclick="MovePage(${element.id})">
+
+                  <div class="card_body">
+                    
+                    <img class="heartimg" 
+                    src=${element.heart_src} 
+                    alt="heart" id="heart${element.id}" 
+                    onclick="heart(${element.id})">
+                  </div>
+            </div>
+            `;
+      }
+    })
+    .join("");
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min})"><</button>`;
+
+  for (let i = 1; i <= Math.ceil(economyBooks.length / 5); i++) {
+    console.log("i", i);
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_econo(${i})" id="pagi_btn${i}">${i}</button>`;
+  }
+  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+}
+
+//값이 있을 때 메인 화면 구성 - 소설
+function dataNovelPrint(page_min) {
+  pagination_mid.innerHTML = "";
+
+  container_main.innerHTML = novelBooks
+    .map((element, index) => {
+      if (page_min <= index && index < page_min + 5) {
+        //해당 범위 내에만 출력
+        return `
+            <div class="cardstyle">
+                  <img class="cardimg" 
+                  src="${element.img}" 
+                  id = ${element.id} 
+                  onclick="MovePage(${element.id})">
+
+                  <div class="card_body">
+                    
+                    <img class="heartimg" 
+                    src=${element.heart_src} 
+                    alt="heart" id="heart${element.id}" 
+                    onclick="heart(${element.id})">
+                  </div>
+            </div>
+            `;
+      }
+    })
+    .join("");
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+
+  for (let i = 1; i <= Math.ceil(novelBooks.length / 5); i++) {
+    console.log("i", i);
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_novel(${i})" id="pagi_btn${i}">${i}</button>`;
+  }
+  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+}
+
+//값이 있을 때 메인 화면 구성 - 인문
+function dataHumanPrint(page_min) {
+  pagination_mid.innerHTML = "";
+
+  container_main.innerHTML = humanBooks
+    .map((element, index) => {
+      if (page_min <= index && index < page_min + 5) {
+        //해당 범위 내에만 출력
+        return `
+            <div class="cardstyle">
+                  <img class="cardimg" 
+                  src="${element.img}" 
+                  id = ${element.id} 
+                  onclick="MovePage(${element.id})">
+
+                  <div class="card_body">
+                    
+                    <img class="heartimg" 
+                    src=${element.heart_src} 
+                    alt="heart" id="heart${element.id}" 
+                    onclick="heart(${element.id})">
+                  </div>
+            </div>
+            `;
+      }
+    })
+    .join("");
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+
+  for (let i = 1; i <= Math.ceil(humanBooks.length / 5); i++) {
+    console.log("i", i);
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_human(${i})" id="pagi_btn${i}">${i}</button>`;
+  }
+  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+}
+
+//값이 있을 때 메인 화면 구성 - 자연과확
+function dataSciencePrint(page_min) {
+  pagination_mid.innerHTML = "";
+
+  container_main.innerHTML = scienceBooks
+    .map((element, index) => {
+      if (page_min <= index && index < page_min + 5) {
+        //해당 범위 내에만 출력
+        return `
+            <div class="cardstyle">
+                  <img class="cardimg" 
+                  src="${element.img}" 
+                  id = ${element.id} 
+                  onclick="MovePage(${element.id})">
+
+                  <div class="card_body">
+                    
+                    <img class="heartimg" 
+                    src=${element.heart_src} 
+                    alt="heart" id="heart${element.id}" 
+                    onclick="heart(${element.id})">
+                  </div>
+            </div>
+            `;
+      }
+    })
+    .join("");
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+
+  for (let i = 1; i <= Math.ceil(scienceBooks.length / 5); i++) {
+    console.log("i", i);
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_scien(${i})" id="pagi_btn${i}">${i}</button>`;
+  }
+  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
 }
 
 //login 버튼 클릭
@@ -78,46 +342,34 @@ category_all.addEventListener("click", () => {
   if (allBook.length === 0) {
     nulldataPrint();
   } else {
-    dataMainPrint();
+    dataMainPrint(0);
+    const paginav_btn = document.getElementById("pagi_btn1");
+    paginav_btn.style.backgroundColor = "red";
   }
 });
 
 //경제 선택
 category_economy.addEventListener("click", () => {
+  pagination_mid.innerHTML = "";
+
   category_economy.style.borderBottom = "3px solid #6ca6cd";
   category_all.style.borderBottom = "none";
   category_humanities.style.borderBottom = "none";
   category_novel.style.borderBottom = "none";
   category_science.style.borderBottom = "none";
-  let economyBooks = main_data_map.filter(
-    (element) => element.genre === "경제"
-  );
+
   if (economyBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    container_main.innerHTML = economyBooks
-      .map((element) => {
-        return `
-      <div class="cardstyle">
-            <img class="cardimg" 
-            src="${element.img}" 
-            id = ${element.id} 
-            onclick="MovePage(${element.id})">
-  
-            <div class="card_body">
-              
-              <img class="heartimg" 
-              src=${element.heart_src} 
-              alt="heart" id="heart${element.id}" 
-              onclick="heart(${element.id})">
-            </div>
-      </div>`;
-      })
-      .join("");
+    dataEconoPrint(0);
+    const paginav_btn = document.getElementById("pagi_btn1");
+    paginav_btn.style.backgroundColor = "red";
   }
 });
 //인문 선택
 category_humanities.addEventListener("click", () => {
+  pagination_mid.innerHTML = "";
+
   category_humanities.style.borderBottom = "3px solid #6ca6cd";
   category_economy.style.borderBottom = "none";
   category_all.style.borderBottom = "none";
@@ -127,63 +379,35 @@ category_humanities.addEventListener("click", () => {
   if (humanBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    container_main.innerHTML = humanBooks
-      .map((element) => {
-        return `
-      <div class="cardstyle">
-            <img class="cardimg" 
-            src="${element.img}" 
-            id = ${element.id} 
-            onclick="MovePage(${element.id})">
-  
-            <div class="card_body">
-              
-              <img class="heartimg" 
-              src=${element.heart_src} 
-              alt="heart" id="heart${element.id}" 
-              onclick="heart(${element.id})">
-            </div>
-      </div>`;
-      })
-      .join("");
+    dataHumanPrint(0);
+    const paginav_btn = document.getElementById(`pagi_btn1`);
+    paginav_btn.style.backgroundColor = "red";
   }
 });
 
 //소설 선택
 category_novel.addEventListener("click", () => {
+  pagination_mid.innerHTML = "";
+
   category_novel.style.borderBottom = "3px solid #6ca6cd";
   category_economy.style.borderBottom = "none";
   category_all.style.borderBottom = "none";
   category_humanities.style.borderBottom = "none";
   category_science.style.borderBottom = "none";
-  let novelBooks = main_data_map.filter((element) => element.genre === "소설");
+
   if (novelBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    container_main.innerHTML = novelBooks
-      .map((element) => {
-        return `
-      <div class="cardstyle">
-            <img class="cardimg" 
-            src="${element.img}" 
-            id = ${element.id} 
-            onclick="MovePage(${element.id})">
-  
-            <div class="card_body">
-              
-              <img class="heartimg" 
-              src=${element.heart_src} 
-              alt="heart" id="heart${element.id}" 
-              onclick="heart(${element.id})">
-            </div>
-      </div>`;
-      })
-      .join("");
+    dataNovelPrint(0);
+    const paginav_btn = document.getElementById("pagi_btn1");
+    paginav_btn.style.backgroundColor = "red";
   }
 });
 
 //자연과학 선택
 category_science.addEventListener("click", () => {
+  pagination_mid.innerHTML = "";
+
   category_science.style.borderBottom = "3px solid #6ca6cd";
   category_economy.style.borderBottom = "none";
   category_all.style.borderBottom = "none";
@@ -195,25 +419,9 @@ category_science.addEventListener("click", () => {
   if (scienceBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    container_main.innerHTML = scienceBooks
-      .map((element) => {
-        return `
-      <div class="cardstyle">
-            <img class="cardimg" 
-            src="${element.img}" 
-            id = ${element.id} 
-            onclick="MovePage(${element.id})">
-  
-            <div class="card_body">
-              
-              <img class="heartimg" 
-              src=${element.heart_src} 
-              alt="heart" id="heart${element.id}" 
-              onclick="heart(${element.id})">
-            </div>
-      </div>`;
-      })
-      .join("");
+    dataSciencePrint(0);
+    const paginav_btn = document.getElementById(`pagi_btn1`);
+    paginav_btn.style.backgroundColor = "red";
   }
 });
 
