@@ -26,14 +26,142 @@ const pagination_right = document.querySelector(".pagination_right");
 let cart_list_data = window.localStorage.getItem("cart_data");
 let cart_list = JSON.parse(cart_list_data);
 
-//페이지 이동
+//카테고리 소설 선택 시 배열
+let novelBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "소설"
+);
+
+//카테고리 경제 선택 시 배열
+let economyBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "경제"
+);
+
+//카테고리 인문 선택 시 배열
+let humanBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "인문"
+);
+
+//카테고리 자연과학 선택 시 배열
+let scienceBooks = JSON.parse(local_data).filter(
+  (element) => element.genre === "자연과학"
+);
+
+//header
 //logo 클릭 시 이동
 logoStyle.addEventListener("click", () => {
   window.location.href = "./main";
 });
 
-//값이 있을 때 메인 화면 구성
-function dataMainPrint(page_min) {
+//login 버튼 클릭
+login.addEventListener("click", () => {
+  Swal.fire({
+    icon: "error",
+    title: "로그인 준비중 입니다",
+  });
+});
+//장바구니 클릭 이벤트
+shop.addEventListener("click", () => {
+  window.location.href = "./shopping_basket";
+});
+
+//페이지네이션 이동 함수
+function paginav(item, genre) {
+  console.log(`page${item}, genre ${genre}`);
+
+  if (genre === "economy") {
+    console.log("경제클릭");
+    let cnt = (item - 1) * 5;
+    dataEconoPrint(cnt, genre);
+  } else if (genre === "human") {
+    console.log("인문클릭");
+    let cnt = (item - 1) * 5;
+    dataHumanPrint(cnt, genre);
+  } else if (genre === "noval") {
+    console.log("noval클릭");
+    let cnt = (item - 1) * 5;
+    dataNovelPrint(cnt, genre);
+  } else if (genre === "seience") {
+    console.log("seience클릭");
+    let cnt = (item - 1) * 5;
+    dataSciencePrint(cnt, genre);
+  } else {
+    //all 선택
+    let cnt = (item - 1) * 5;
+    dataMainPrint(cnt, genre);
+  }
+  const paginav_btn = document.getElementById(`pagi_btn${item}`);
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//페이지네이션 이전 이동 함수
+function page_pre(current_page, genre) {
+  //console.log("ger", genre);
+  let page = Math.ceil(current_page - 5);
+  if (page < 0) {
+    alert("이전으로 갈 수 없습니다.");
+  } else {
+    if (genre === "economy") {
+      console.log("경제클릭");
+      dataEconoPrint(page, genre);
+    } else if (genre === "human") {
+      console.log("인문클릭");
+      dataHumanPrint(page, genre);
+    } else if (genre === "noval") {
+      console.log("noval클릭");
+      dataNovelPrint(page, genre);
+    } else if (genre === "seience") {
+      console.log("seience클릭");
+      dataSciencePrint(page, genre);
+    } else {
+      //all 선택
+      dataMainPrint(page, genre);
+    }
+
+    const paginav_btn = document.getElementById(`pagi_btn${current_page / 5}`);
+    paginav_btn.style.backgroundColor = "red";
+  }
+}
+
+//페이지네이션 다음 이동 함수
+function page_next(current_page, genre) {
+  //console.log("다음 클릭");
+  //console.log("current_page", current_page + 5); //현재 위치한 index 값
+  let page = current_page + 5;
+
+  if (genre === "economy" && page < economyBooks.length) {
+    console.log("경제클릭");
+    dataEconoPrint(page, genre);
+  } else if (genre === "human" && page < humanBooks.length) {
+    console.log("인문클릭");
+    dataHumanPrint(page, genre);
+  } else if (genre === "noval" && page < novelBooks.length) {
+    console.log("noval클릭");
+    dataNovelPrint(page, genre);
+  } else if (genre === "seience" && page < scienceBooks.length) {
+    console.log("seience클릭");
+    dataSciencePrint(page, genre);
+  } else if (genre === "all" && page < local_data_len) {
+    //all 선택
+    dataMainPrint(page, genre);
+  } else {
+    alert("이후로 갈 수 없습니다.");
+  }
+  const paginav_btn = document.getElementById(
+    `pagi_btn${current_page / 5 + 2}`
+  );
+  paginav_btn.style.backgroundColor = "red";
+}
+
+//값이 없을 때 메인 화면 구성
+function nulldataPrint() {
+  container_main.innerHTML = `<div class="empty_style"><img class="imageStyle" src="./Img/empty.png" alt="empty"></div>`;
+  pagination_left.innerHTML = "";
+  pagination_mid.innerHTML = "";
+  pagination_right.innerHTML = "";
+}
+
+//값이 있을 때 메인 화면 구성 - all
+function dataMainPrint(page_min, genre) {
   //console.log("page_min", page_min);
   pagination_mid.innerHTML = "";
   //console.log("local_data", JSON.parse(local_data).length);
@@ -62,123 +190,18 @@ function dataMainPrint(page_min) {
       }
     })
     .join("");
-  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min})"><</button>`;
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min},'${genre}')"><</button>`;
 
   for (let i = 1; i <= Math.ceil(local_data_len / 5); i++) {
-    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i})" id="pagi_btn${i}">${i}</button>`;
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i},'${genre}')" id="pagi_btn${i}">${i}</button>`;
   }
   pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min})">></button>`;
 }
 
-//페이지네이션 이동 함수 - all
-function paginav(item) {
-  console.log(`page${item}`);
-  let cnt = (item - 1) * 5;
-
-  dataMainPrint(cnt);
-  const paginav_btn = document.getElementById(`pagi_btn${item}`);
-  paginav_btn.style.backgroundColor = "red";
-}
-
-//페이지네이션 이동 함수 - 소설
-function paginav_cat_novel(item) {
-  console.log(`page${item}`);
-  let cnt = (item - 1) * 5;
-  dataNovelPrint(cnt);
-  const paginav_btn = document.getElementById(`pagi_btn${item}`);
-  paginav_btn.style.backgroundColor = "red";
-}
-
-//페이지네이션 이동 함수 - 경제
-function paginav_cat_econo(item) {
-  console.log(`page${item}`);
-  let cnt = (item - 1) * 5;
-  dataEconoPrint(cnt);
-  const paginav_btn = document.getElementById(`pagi_btn${item}`);
-  paginav_btn.style.backgroundColor = "red";
-}
-
-//페이지네이션 이동 함수 - 인문
-function paginav_cat_human(item) {
-  console.log(`page${item}`);
-  let cnt = (item - 1) * 5;
-  dataHumanPrint(cnt);
-  const paginav_btn = document.getElementById(`pagi_btn${item}`);
-  paginav_btn.style.backgroundColor = "red";
-}
-
-//페이지네이션 이동 함수 - 자연과학
-function paginav_cat_scien(item) {
-  console.log(`page${item}`);
-  let cnt = (item - 1) * 5;
-  dataSciencePrint(cnt);
-  const paginav_btn = document.getElementById(`pagi_btn${item}`);
-  paginav_btn.style.backgroundColor = "red";
-}
-
-//페이지네이션 이전 이동 함수
-function page_pre(current_page) {
-  //console.log("이전 클릭");
-  //console.log("current_page", current_page);
-  let page = Math.ceil(current_page - 5);
-  if (page < 0) {
-    alert("이전으로 갈 수 없습니다.");
-  } else {
-    dataMainPrint(page);
-    const paginav_btn = document.getElementById(`pagi_btn${current_page / 5}`);
-    paginav_btn.style.backgroundColor = "red";
-  }
-}
-
-//페이지네이션 다음 이동 함수
-function page_next(current_page) {
-  //console.log("다음 클릭");
-  console.log("current_page", current_page + 5); //현재 위치한 index 값
-  let page = current_page + 5;
-  if (page < local_data_len) {
-    console.log("pager", page);
-    dataMainPrint(page);
-    const paginav_btn = document.getElementById(
-      `pagi_btn${current_page / 5 + 2}`
-    );
-    paginav_btn.style.backgroundColor = "red";
-  } else {
-    alert("이후로 갈 수 없습니다.");
-  }
-}
-
-//값이 없을 때 메인 화면 구성
-function nulldataPrint() {
-  container_main.innerHTML = `<div class="empty_style"><img class="imageStyle" src="./Img/empty.png" alt="empty"></div>`;
-  pagination_left.innerHTML = "";
-  pagination_mid.innerHTML = "";
-  pagination_right.innerHTML = "";
-}
-
-//카테고리 소설 선택 시 배열
-let novelBooks = JSON.parse(local_data).filter(
-  (element) => element.genre === "소설"
-);
-
-//카테고리 경제 선택 시 배열
-let economyBooks = JSON.parse(local_data).filter(
-  (element) => element.genre === "경제"
-);
-
-//카테고리 인문 선택 시 배열
-let humanBooks = JSON.parse(local_data).filter(
-  (element) => element.genre === "인문"
-);
-
-//카테고리 자연과학 선택 시 배열
-let scienceBooks = JSON.parse(local_data).filter(
-  (element) => element.genre === "자연과학"
-);
-
 //값이 있을 때 메인 화면 구성 - 경제
-function dataEconoPrint(page_min) {
+function dataEconoPrint(page_min, genre) {
   pagination_mid.innerHTML = "";
-
+  //console.log("genre", genre);
   container_main.innerHTML = economyBooks
     .map((element, index) => {
       if (page_min <= index && index < page_min + 5) {
@@ -202,17 +225,16 @@ function dataEconoPrint(page_min) {
       }
     })
     .join("");
-  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min})"><</button>`;
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min},'${genre}')"><</button>`;
 
   for (let i = 1; i <= Math.ceil(economyBooks.length / 5); i++) {
-    console.log("i", i);
-    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_econo(${i})" id="pagi_btn${i}">${i}</button>`;
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i},'${genre}')" id="pagi_btn${i}">${i}</button>`;
   }
-  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+  pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min},'${genre}')">></button>`;
 }
 
 //값이 있을 때 메인 화면 구성 - 소설
-function dataNovelPrint(page_min) {
+function dataNovelPrint(page_min, genre) {
   pagination_mid.innerHTML = "";
 
   container_main.innerHTML = novelBooks
@@ -238,17 +260,16 @@ function dataNovelPrint(page_min) {
       }
     })
     .join("");
-  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min},'${genre}')"><</button>`;
 
   for (let i = 1; i <= Math.ceil(novelBooks.length / 5); i++) {
-    console.log("i", i);
-    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_novel(${i})" id="pagi_btn${i}">${i}</button>`;
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i},'${genre}')" id="pagi_btn${i}">${i}</button>`;
   }
-  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+  pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min},'${genre}')">></button>`;
 }
 
 //값이 있을 때 메인 화면 구성 - 인문
-function dataHumanPrint(page_min) {
+function dataHumanPrint(page_min, genre) {
   pagination_mid.innerHTML = "";
 
   container_main.innerHTML = humanBooks
@@ -274,17 +295,16 @@ function dataHumanPrint(page_min) {
       }
     })
     .join("");
-  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min},'${genre}')"><</button>`;
 
   for (let i = 1; i <= Math.ceil(humanBooks.length / 5); i++) {
-    console.log("i", i);
-    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_human(${i})" id="pagi_btn${i}">${i}</button>`;
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i},'${genre}')" id="pagi_btn${i}">${i}</button>`;
   }
-  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+  pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min},'${genre}')">></button>`;
 }
 
 //값이 있을 때 메인 화면 구성 - 자연과확
-function dataSciencePrint(page_min) {
+function dataSciencePrint(page_min, genre) {
   pagination_mid.innerHTML = "";
 
   container_main.innerHTML = scienceBooks
@@ -310,26 +330,14 @@ function dataSciencePrint(page_min) {
       }
     })
     .join("");
-  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre()"><</button>`;
+  pagination_left.innerHTML = `<button class="paginav_left" onClick="page_pre(${page_min},'${genre}')"><</button>`;
 
   for (let i = 1; i <= Math.ceil(scienceBooks.length / 5); i++) {
     console.log("i", i);
-    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav_cat_scien(${i})" id="pagi_btn${i}">${i}</button>`;
+    pagination_mid.innerHTML += `<button class="paginav_mid" onClick="paginav(${i},'${genre}')" id="pagi_btn${i}">${i}</button>`;
   }
-  pagination_right.innerHTML = `<button class="paginav_right">></button>`;
+  pagination_right.innerHTML = `<button class="paginav_right" onClick="page_next(${page_min},'${genre}')">></button>`;
 }
-
-//login 버튼 클릭
-login.addEventListener("click", () => {
-  Swal.fire({
-    icon: "error",
-    title: "로그인 준비중 입니다",
-  });
-});
-//장바구니 클릭 이벤트
-shop.addEventListener("click", () => {
-  window.location.href = "./shopping_basket";
-});
 
 //전체 선택
 category_all.addEventListener("click", () => {
@@ -342,7 +350,7 @@ category_all.addEventListener("click", () => {
   if (allBook.length === 0) {
     nulldataPrint();
   } else {
-    dataMainPrint(0);
+    dataMainPrint(0, "all");
     const paginav_btn = document.getElementById("pagi_btn1");
     paginav_btn.style.backgroundColor = "red";
   }
@@ -361,7 +369,7 @@ category_economy.addEventListener("click", () => {
   if (economyBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    dataEconoPrint(0);
+    dataEconoPrint(0, "economy");
     const paginav_btn = document.getElementById("pagi_btn1");
     paginav_btn.style.backgroundColor = "red";
   }
@@ -379,7 +387,7 @@ category_humanities.addEventListener("click", () => {
   if (humanBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    dataHumanPrint(0);
+    dataHumanPrint(0, "human");
     const paginav_btn = document.getElementById(`pagi_btn1`);
     paginav_btn.style.backgroundColor = "red";
   }
@@ -398,7 +406,7 @@ category_novel.addEventListener("click", () => {
   if (novelBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    dataNovelPrint(0);
+    dataNovelPrint(0, "noval");
     const paginav_btn = document.getElementById("pagi_btn1");
     paginav_btn.style.backgroundColor = "red";
   }
@@ -419,7 +427,7 @@ category_science.addEventListener("click", () => {
   if (scienceBooks.length === 0) {
     nulldataPrint(); // 데이터가 없을 때 빈 화면 표시
   } else {
-    dataSciencePrint(0);
+    dataSciencePrint(0, "science");
     const paginav_btn = document.getElementById(`pagi_btn1`);
     paginav_btn.style.backgroundColor = "red";
   }
